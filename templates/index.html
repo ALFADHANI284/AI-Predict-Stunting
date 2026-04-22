@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Stunting</title>
+</head>
+<body>
+    <h2>Cek Status Gizi Balita</h2>
+    <form action="/predict" method="post">
+        <input type="number" name="umur" placeholder="Umur (Bulan)" required><br><br>
+        <select name="jenis_kelamin">
+            <option value="laki-laki">Laki Laki</option>
+            <option value="perempuan">Perempuan</option>
+        </select><br><br>
+        <input type="number" name="tinggi" placeholder="Tinggi Badan (cm)" step="0.1" required><br><br>
+        <button type="submit">Prediksi Sekarang</button>
+    </form>
+    <h3>{{ prediction_text }}</h3>
+</body>
+</html>
