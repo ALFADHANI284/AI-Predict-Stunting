@@ -1,21 +1,329 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediksi Stunting</title>
+    <title>Deteksi Stunting Usia 0-3 Tahun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+    /* Menggunakan font Nunito dengan ketebalan ekstra agar terlihat seperti buku anak */
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap');
+
+    :root {
+        /* Warna Status Gizi */
+        --merah: #ff6b6b; /* Merah yang lebih cerah dan lembut */
+        --pink: #ff9ff3;
+        --hijau-muda: #1dd1a1;
+        --hijau-tua: #10ac84;
+        
+        /* Warna Tema Dominan Putih & Biru */
+        --bg-body: #e3f2fd; /* Biru langit sangat muda */
+        --card-bg: #ffffff; /* Putih bersih */
+        --primary-blue: #00a8ff; /* Biru ceria khas anak-anak */
+        --border-blue: #c8e6ff; /* Biru pastel untuk garis tepi */
+        --text-color: #2f3640;
+    }
+
+    body {
+        font-family: 'Nunito', sans-serif;
+        background-color: var(--bg-body);
+        /* Membuat pola polkadot halus di background */
+        background-image: radial-gradient(#bce0fd 20%, transparent 20%), radial-gradient(#bce0fd 20%, transparent 20%);
+        background-size: 40px 40px;
+        background-position: 0 0, 20px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .card {
+        background: var(--card-bg);
+        padding: 40px 30px;
+        border-radius: 40px; /* Sudut sangat membulat seperti gelembung */
+        box-shadow: 0 15px 35px rgba(0, 168, 255, 0.15);
+        border: 4px solid var(--border-blue);
+        width: 100%;
+        max-width: 420px;
+    }
+
+    h2 {
+        text-align: center;
+        color: var(--primary-blue);
+        margin-top: 0;
+        font-weight: 900;
+        font-size: 26px;
+        letter-spacing: 1px;
+    }
+
+    p.subtitle {
+        text-align: center;
+        color: #718093;
+        font-size: 15px;
+        margin-bottom: 30px;
+        margin-top: -10px;
+        font-weight: 800;
+    }
+
+    .input-group {
+        margin-bottom: 18px;
+    }
+
+    label {
+        font-weight: 800;
+        color: var(--primary-blue);
+        font-size: 15px;
+        display: block;
+        margin-bottom: 8px;
+        margin-left: 10px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 15px 20px;
+        border: 3px solid #dff1ff;
+        border-radius: 25px; /* Bentuk pil / kapsul */
+        box-sizing: border-box;
+        font-family: 'Nunito', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-color);
+        background-color: #f9fcff;
+        transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 5px rgba(0, 168, 255, 0.2);
+    }
+
+    /* Menghilangkan panah naik/turun bawaan browser di input angka */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+
+    button {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #00a8ff, #0097e6);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: 900;
+        cursor: pointer;
+        /* Efek animasi memantul (bouncy) ala game anak */
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        font-family: 'Nunito', sans-serif;
+        margin-top: 15px;
+        box-shadow: 0 8px 15px rgba(0, 168, 255, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    button:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 12px 20px rgba(0, 168, 255, 0.4);
+    }
+
+    button:active {
+        transform: translateY(2px) scale(0.98);
+        box-shadow: 0 4px 10px rgba(0, 168, 255, 0.3);
+    }
+
+    /* Styling Kotak Hasil Prediksi */
+    .result-box {
+        margin-top: 30px;
+        padding: 25px 20px;
+        border-radius: 25px;
+        text-align: center;
+        animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        border: 3px solid rgba(255,255,255,0.5);
+    }
+
+    /* Warna berdasarkan kriteria dengan teks yang kontras */
+    .sangat-pendek { background-color: var(--merah); color: white; }
+    .pendek { background-color: var(--pink); color: #61001d; }
+    .normal { background-color: var(--hijau-muda); color: #004d00; }
+    .tinggi { background-color: var(--hijau-tua); color: white; }
+
+    .result-pesan {
+        font-weight: 900;
+        font-size: 20px;
+        margin-bottom: 12px;
+        line-height: 1.3;
+    }
+
+    .result-saran {
+        font-size: 15px;
+        line-height: 1.6;
+        font-weight: 600;
+        opacity: 0.95;
+    }
+
+    .error-box {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #fff3cd;
+        color: #856404;
+        border: 3px solid #ffeeba;
+        border-radius: 20px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 14px;
+        animation: shake 0.4s ease-in-out;
+    }
+
+    /* Keyframes untuk animasi pop-up hasil */
+    @keyframes popIn {
+        0% { opacity: 0; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Keyframes untuk animasi error bergetar */
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+   /* --- CSS Tambahan untuk Radio Button --- */
+    .radio-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 5px;
+    }
+
+    .radio-item {
+        flex: 1;
+        position: relative;
+    }
+
+    /* Sembunyikan lingkaran radio asli */
+    .radio-item input[type="radio"] {
+        display: none;
+    }
+
+    /* Styling label sebagai tombol custom */
+    .radio-item label {
+        display: block;
+        background-color: #f9fcff;
+        border: 3px solid #dff1ff;
+        color: #718093;
+        padding: 12px;
+        text-align: center;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 800;
+        font-size: 14px;
+        margin-left: 0; /* Reset margin label agar rata tengah */
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* Efek saat opsi dipilih */
+    .radio-item input[type="radio"]:checked + label {
+        background-color: var(--primary-blue);
+        color: white;
+        border-color: var(--primary-blue);
+        box-shadow: 0 8px 15px rgba(0, 168, 255, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Efek saat kursor di atas tombol */
+    .radio-item label:hover {
+        border-color: var(--primary-blue);
+        background-color: #f0f8ff;
+    }
+
+    /* --- Custom Scrollbar (Bilah Gulir) --- */
+    
+    /* Untuk browser Firefox */
+    html {
+        scrollbar-color: var(--primary-blue) var(--bg-body);
+        scrollbar-width: thin;
+    }
+
+    /* Untuk browser Chrome, Edge, Safari */
+    ::-webkit-scrollbar {
+        width: 14px; /* Lebar scrollbar */
+    }
+
+    /* Jalur tempat scrollbar bergerak (Track) */
+    ::-webkit-scrollbar-track {
+        background-color: var(--bg-body); /* Mengikuti warna background biru muda */
+    }
+
+    /* Bagian yang bisa ditarik (Thumb) */
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--primary-blue); /* Warna biru ceria */
+        border-radius: 20px; /* Dibuat sangat membulat (pill) */
+        /* Memberikan efek border transparan agar ukurannya terlihat lebih mungil */
+        border: 4px solid var(--bg-body); 
+    }
+
+    /* Saat bagian yang ditarik disorot kursor */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #0097e6; /* Berubah jadi biru yang sedikit lebih gelap */
+    }
+</style>
 </head>
 <body>
-    <h2>Cek Status Gizi Balita</h2>
-    <form action="/predict" method="post">
-        <input type="number" name="umur" placeholder="Umur (Bulan)" required><br><br>
-        <select name="jenis_kelamin">
-            <option value="laki-laki">Laki Laki</option>
-            <option value="perempuan">Perempuan</option>
-        </select><br><br>
-        <input type="number" name="tinggi" placeholder="Tinggi Badan (cm)" step="0.1" required><br><br>
-        <button type="submit">Prediksi Sekarang</button>
-    </form>
-    <h3>{{ prediction_text }}</h3>
+
+    <div class="card">
+        <h2>Deteksi Stunting Usia 0-3 Tahun</h2>
+        <p class="subtitle">Pantau pertumbuhan buah hati dengan mudah, Bun!</p>
+
+        <form action="/predict" method="post">
+            <div class="input-group">
+                <label>Umur Anak (Bulan)</label>
+               <input type="number" name="umur" min="1" max="36" placeholder="Contoh: 12" required 
+       oninvalid="this.setCustomValidity('Maaf Bun, umur harus antara 1 sampai 36 bulan ya.')" 
+       oninput="this.setCustomValidity('')">
+            </div>
+
+            <div class="input-group">
+    <label>Jenis Kelamin</label>
+    <div class="radio-container">
+        <div class="radio-item">
+            <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" required>
+            <label for="laki-laki">Laki-laki</label>
+        </div>
+        <div class="radio-item">
+            <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" required>
+            <label for="perempuan">Perempuan</label>
+        </div>
+    </div>
+</div>
+
+            <div class="input-group">
+                <label>Tinggi Badan (cm)</label>
+                <input type="number" name="tinggi" min="45" max="110" step="0.1" placeholder="Contoh: 75.5" required 
+       oninvalid="this.setCustomValidity('Maaf Bun, tinggi badan harus antara 45 sampai 110 cm ya.')" 
+       oninput="this.setCustomValidity('')">
+            </div>
+
+            <button type="submit">Cek Sekarang</button>
+        </form>
+
+        {% if error %}
+            <div class="error-box">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if hasil %}
+            <div class="result-box {{ hasil.css }}">
+                <div class="result-pesan">{{ hasil.pesan }}</div>
+                <div class="result-saran">{{ hasil.saran }}</div>
+            </div>
+        {% endif %}
+    </div>
+
 </body>
 </html>
