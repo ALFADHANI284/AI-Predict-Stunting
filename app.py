@@ -103,23 +103,44 @@ def predict_obesitas():
 
             # Mapping Label Obesitas (Sesuaikan isinya dengan label asli dari model lo)
             # Misalnya: 0 = Underweight, 1 = Normal weight, 2 = Overweight, 3 = Obesity
-            mapping_kategori = {
-                0: "Underweight",
-                1: "Normal weight",
-                2: "Overweight",
-                3: "Obesity"
+            # Mapping Kategori, CSS, dan Saran (Obesitas)
+            status_info_obesitas = {
+                0: {
+                    "css": "sangat-pendek",
+                    "kategori": "Underweight (Kekurangan Berat Badan / Terlalu Kurus)",
+                    "saran": "Perbanyak asupan makanan bergizi dan kalori sehat untuk mencapai berat badan ideal."
+                },
+                1: {
+                    "css": "normal",
+                    "kategori": "Normal Weight (Berat Badan Ideal)",
+                    "saran": "Bagus! Pertahankan pola makan sehat dan aktivitas fisik teratur untuk menjaga berat badan."
+                },
+                2: {
+                    "css": "pendek",
+                    "kategori": "Overweight (Kelebihan Berat Badan / Gemuk)",
+                    "saran": "Mulai kurangi konsumsi gula berlebih dan tingkatkan olahraga untuk menurunkan berat badan."
+                },
+                3: {
+                    "css": "sangat-pendek",
+                    "kategori": "Obesity (Obesitas / Sangat Gemuk)",
+                    "saran": "Segera atur defisit kalori dan rutin berolahraga. Konsultasikan dengan dokter gizi jika perlu."
+                }
             }
 
-            # Ambil string kategori berdasarkan angka prediksi
-            kategori_hasil = mapping_kategori.get(angka_hasil, "Kategori Tidak Diketahui")
-
-            # Bikin pesan output sesuai format yang lo mau
-            pesan_final = f"Hai {nama}, berdasarkan data yang kamu masukkan, kamu termasuk dalam kategori: {kategori_hasil}"
-
+            # Ambil data dari dictionary
+            data_obesitas = status_info_obesitas.get(angka_hasil)
             
-            css_class = "normal" if kategori_hasil == "Normal weight" else "pendek" 
+            # Gabungin nama inputan user dengan pesan kategorinya
+            pesan_final = f"Hai {nama}, berdasarkan data yang kamu masukkan, kamu termasuk kategori: {data_obesitas['kategori']}"
 
-            return render_template('index.html', hasil_obesitas=pesan_final, css_obesitas=css_class)
+            # Bungkus ke dalam dictionary baru buat dikirim ke HTML
+            hasil_akhir_obesitas = {
+                "css": data_obesitas["css"],
+                "pesan": pesan_final,
+                "saran": data_obesitas["saran"]
+            }
+
+            return render_template('index.html', hasil_obesitas=hasil_akhir_obesitas)
 
         except Exception as e:
             return render_template('index.html', error_obesitas=f'Kesalahan Sistem: {str(e)}')
