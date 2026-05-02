@@ -7,8 +7,8 @@ app = Flask(__name__)
 
 # 2. Load Model dan Scaler
 try:
-    model = joblib.load('model_knn.pkl')
-    scaler = joblib.load('scaler.pkl')
+    model = joblib.load('models/model_knn.pkl')
+    scaler = joblib.load('scaler/scaler.pkl')
     print("Model dan Scaler berhasil di muat.")
 except Exception as e:
     print(f"Error saat memuat file: {e}")
