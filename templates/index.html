@@ -205,14 +205,44 @@
             border-top: 1px solid var(--border-color);
             margin-top: auto;
         }
+        /* === SCROLLBAR STYLING === */
+        
+        /* Untuk Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-blue) var(--bg-color);
+        }
+
+        /* Untuk WebKit (Chrome, Safari, Edge, Opera) */
+        ::-webkit-scrollbar {
+            width: 10px;  /* Lebar scrollbar vertikal */
+            height: 10px; /* Tinggi scrollbar horizontal (kalau ada) */
+        }
+
+        /* Background/Jalur scrollbar */
+        ::-webkit-scrollbar-track {
+            background-color: var(--bg-color);
+        }
+
+        /* Bagian scrollbar yang bisa ditarik (Thumb) */
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--primary-blue); /* Warna biru lembut */
+            border-radius: 10px;
+            border: 2px solid var(--bg-color); /* Efek padding dalam track */
+        }
+
+        /* Saat scrollbar di-hover/disentuh kursor */
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--primary-blue);
+        }
     </style>
 </head>
 <body>
 
     <!-- HEADER -->
     <header>
-        <h1>HealthPredict</h1>
-        <p>Platform Pintar Cek Pertumbuhan Anak & Kategori Berat Badan</p>
+        <h1>FaDict</h1>
+        <p>Platform Pintar Cek Stunting & Kategori Berat Badan</p>
     </header>
 
     <!-- MAIN CONTENT -->
