@@ -8,8 +8,8 @@ app = Flask(__name__)
 # 2. Load Model dan Scaler
 try:
     # --- Model Stunting --
-    model = joblib.load('models/model_knn.pkl')
-    scaler = joblib.load('scaler/scaler.pkl')
+    model_stunting = joblib.load('models/model_knn_stunting.pkl')
+    scaler_stunting = joblib.load('scaler/scaler_stunting.pkl')
 
     # --- Model Obesitas ---
     model_obesitas = joblib.load('models/model_knn_obesitas.pkl')
@@ -78,8 +78,6 @@ def predict_obesitas():
             berat = float(request.form['berat'])
 
             # Susun fitur dan scaling
-            # PENTING: Urutan ini (umur, gender, tinggi, berat) HARUS sama persis
-            # dengan urutan kolom saat lo nge-train model KNN lo!
             fitur_raw = np.array([[umur, gender, tinggi, berat]])
             fitur_scaled = scaler_obesitas.transform(fitur_raw)
         
@@ -102,8 +100,7 @@ def predict_obesitas():
             # Bikin pesan output sesuai format yang lo mau
             pesan_final = f"Hai {nama}, berdasarkan data yang kamu masukkan, kamu termasuk dalam kategori: {kategori_hasil}"
 
-            # Tentukan warna CSS (opsional, gw kasih default normal/hijau)
-            # Bisa lo kustomisasi logic-nya kalau mau beda warna tiap kategori
+            
             css_class = "normal" if kategori_hasil == "Normal weight" else "pendek" 
 
             return render_template('index.html', hasil_obesitas=pesan_final, css_obesitas=css_class)
