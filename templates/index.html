@@ -314,7 +314,8 @@
 
                 {% if hasil_obesitas %}
                     <div class="result-box">
-                        <div class="result-pesan">{{ hasil_obesitas }}</div>
+                <div class="result-pesan">{{ hasil_obesitas.pesan }}</div>
+                <div class="result-saran">{{ hasil_obesitas.saran }}</div>
                     </div>
                 {% endif %}
             </div>
