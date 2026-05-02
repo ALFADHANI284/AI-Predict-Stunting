@@ -3,394 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deteksi Stunting Usia 0-3 Tahun</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Platform Prediksi Kesehatan</title>
     <style>
-    /* Menggunakan font Nunito dengan ketebalan ekstra agar terlihat seperti buku anak */
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap');
+        /* === RESET & GLOBAL VARIABLES === */
+        :root {
+            --primary-blue: #0056b3;
+            --light-blue: #e6f0fa;
+            --white: #ffffff;
+            --bg-color: #f4f7f6;
+            --text-dark: #333333;
+            --text-muted: #666666;
+            --border-color: #d1d9e6;
+        }
 
-    :root {
-        /* Warna Status Gizi */
-        --merah: #ff6b6b; /* Merah yang lebih cerah dan lembut */
-        --pink: #ff9ff3;
-        --hijau-muda: #1dd1a1;
-        --hijau-tua: #10ac84;
-        
-        /* Warna Tema Dominan Putih & Biru */
-        --bg-body: #e3f2fd; /* Biru langit sangat muda */
-        --card-bg: #ffffff; /* Putih bersih */
-        --primary-blue: #00a8ff; /* Biru ceria khas anak-anak */
-        --border-blue: #c8e6ff; /* Biru pastel untuk garis tepi */
-        --text-color: #2f3640;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-        font-family: 'Nunito', sans-serif;
-        background-color: var(--bg-body);
-        /* Membuat pola polkadot halus di background */
-        background-image: radial-gradient(#bce0fd 20%, transparent 20%), radial-gradient(#bce0fd 20%, transparent 20%);
-        background-size: 40px 40px;
-        background-position: 0 0, 20px 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
-        padding: 20px;
-        box-sizing: border-box;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    .card {
-        background: var(--card-bg);
-        padding: 40px 30px;
-        border-radius: 40px; /* Sudut sangat membulat seperti gelembung */
-        box-shadow: 0 15px 35px rgba(0, 168, 255, 0.15);
-        border: 4px solid var(--border-blue);
-        width: 100%;
-        max-width: 420px;
-    }
+        /* === HEADER === */
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 4px solid #003d82;
+        }
 
-    h2 {
-        text-align: center;
-        color: var(--primary-blue);
-        margin-top: 0;
-        font-weight: 900;
-        font-size: 26px;
-        letter-spacing: 1px;
-    }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
 
-    p.subtitle {
-        text-align: center;
-        color: #718093;
-        font-size: 15px;
-        margin-bottom: 30px;
-        margin-top: -10px;
-        font-weight: 800;
-    }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
 
-    .input-group {
-        margin-bottom: 18px;
-    }
+        /* === MAIN CONTENT & GRID === */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
 
-    label {
-        font-weight: 800;
-        color: var(--primary-blue);
-        font-size: 15px;
-        display: block;
-        margin-bottom: 8px;
-        margin-left: 10px;
-    }
+        .forms-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
 
-    input, select {
-        width: 100%;
-        padding: 15px 20px;
-        border: 3px solid #dff1ff;
-        border-radius: 25px; /* Bentuk pil / kapsul */
-        box-sizing: border-box;
-        font-family: 'Nunito', sans-serif;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--text-color);
-        background-color: #f9fcff;
-        transition: all 0.3s ease;
-    }
+        /* === CARD STYLING === */
+        .card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--primary-blue);
+        }
 
-    input:focus, select:focus {
-        outline: none;
-        border-color: var(--primary-blue);
-        background-color: #ffffff;
-        box-shadow: 0 0 0 5px rgba(0, 168, 255, 0.2);
-    }
+        .card h2 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
 
-    /* Menghilangkan panah naik/turun bawaan browser di input angka */
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    button {
-        width: 100%;
-        padding: 18px;
-        background: linear-gradient(135deg, #00a8ff, #0097e6);
-        color: white;
-        border: none;
-        border-radius: 30px;
-        font-size: 18px;
-        font-weight: 900;
-        cursor: pointer;
-        /* Efek animasi memantul (bouncy) ala game anak */
-        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        font-family: 'Nunito', sans-serif;
-        margin-top: 15px;
-        box-shadow: 0 8px 15px rgba(0, 168, 255, 0.3);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
+        /* === FORM INPUTS === */
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
 
-    button:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 12px 20px rgba(0, 168, 255, 0.4);
-    }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
 
-    button:active {
-        transform: translateY(2px) scale(0.98);
-        box-shadow: 0 4px 10px rgba(0, 168, 255, 0.3);
-    }
+        .input-group input[type="text"],
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #fafbfc;
+        }
 
-    /* Styling Kotak Hasil Prediksi */
-    .result-box {
-        margin-top: 30px;
-        padding: 25px 20px;
-        border-radius: 25px;
-        text-align: center;
-        animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        border: 3px solid rgba(255,255,255,0.5);
-    }
+        .input-group input[type="text"]:focus,
+        .input-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        }
 
-    /* Warna berdasarkan kriteria dengan teks yang kontras */
-    .sangat-pendek { background-color: var(--merah); color: white; }
-    .pendek { background-color: var(--pink); color: #61001d; }
-    .normal { background-color: var(--hijau-muda); color: #004d00; }
-    .tinggi { background-color: var(--hijau-tua); color: white; }
+        /* === RADIO BUTTONS === */
+        .radio-container {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.5rem 0;
+        }
 
-    .result-pesan {
-        font-weight: 900;
-        font-size: 20px;
-        margin-bottom: 12px;
-        line-height: 1.3;
-    }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .result-saran {
-        font-size: 15px;
-        line-height: 1.6;
-        font-weight: 600;
-        opacity: 0.95;
-    }
+        .radio-item input[type="radio"] {
+            accent-color: var(--primary-blue);
+            width: 1.1rem;
+            height: 1.1rem;
+            cursor: pointer;
+        }
 
-    .error-box {
-        margin-top: 20px;
-        padding: 15px;
-        background-color: #fff3cd;
-        color: #856404;
-        border: 3px solid #ffeeba;
-        border-radius: 20px;
-        text-align: center;
-        font-weight: 800;
-        font-size: 14px;
-        animation: shake 0.4s ease-in-out;
-    }
+        .radio-item label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
 
-    /* Keyframes untuk animasi pop-up hasil */
-    @keyframes popIn {
-        0% { opacity: 0; transform: scale(0.8); }
-        100% { opacity: 1; transform: scale(1); }
-    }
+        /* === BUTTON === */
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
 
-    /* Keyframes untuk animasi error bergetar */
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        75% { transform: translateX(5px); }
-    }
-   /* --- CSS Tambahan untuk Radio Button --- */
-    .radio-container {
-        display: flex;
-        gap: 15px;
-        margin-top: 5px;
-    }
+        button:hover {
+            background-color: #004494;
+        }
 
-    .radio-item {
-        flex: 1;
-        position: relative;
-    }
+        /* === ALERTS & RESULTS === */
+        .error-box, .result-box {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
 
-    /* Sembunyikan lingkaran radio asli */
-    .radio-item input[type="radio"] {
-        display: none;
-    }
+        .error-box {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #f87171;
+        }
 
-    /* Styling label sebagai tombol custom */
-    .radio-item label {
-        display: block;
-        background-color: #f9fcff;
-        border: 3px solid #dff1ff;
-        color: #718093;
-        padding: 12px;
-        text-align: center;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: 800;
-        font-size: 14px;
-        margin-left: 0; /* Reset margin label agar rata tengah */
-        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
+        .result-box {
+            background-color: var(--light-blue);
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
 
-    /* Efek saat opsi dipilih */
-    .radio-item input[type="radio"]:checked + label {
-        background-color: var(--primary-blue);
-        color: white;
-        border-color: var(--primary-blue);
-        box-shadow: 0 8px 15px rgba(0, 168, 255, 0.3);
-        transform: translateY(-2px);
-    }
+        .result-pesan {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
 
-    /* Efek saat kursor di atas tombol */
-    .radio-item label:hover {
-        border-color: var(--primary-blue);
-        background-color: #f0f8ff;
-    }
+        .result-saran {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
 
-    /* --- Custom Scrollbar (Bilah Gulir) --- */
-    
-    /* Untuk browser Firefox */
-    html {
-        scrollbar-color: var(--primary-blue) var(--bg-body);
-        scrollbar-width: thin;
-    }
-
-    /* Untuk browser Chrome, Edge, Safari */
-    ::-webkit-scrollbar {
-        width: 14px; /* Lebar scrollbar */
-    }
-
-    /* Jalur tempat scrollbar bergerak (Track) */
-    ::-webkit-scrollbar-track {
-        background-color: var(--bg-body); /* Mengikuti warna background biru muda */
-    }
-
-    /* Bagian yang bisa ditarik (Thumb) */
-    ::-webkit-scrollbar-thumb {
-        background-color: var(--primary-blue); /* Warna biru ceria */
-        border-radius: 20px; /* Dibuat sangat membulat (pill) */
-        /* Memberikan efek border transparan agar ukurannya terlihat lebih mungil */
-        border: 4px solid var(--bg-body); 
-    }
-
-    /* Saat bagian yang ditarik disorot kursor */
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: #0097e6; /* Berubah jadi biru yang sedikit lebih gelap */
-    }
-</style>
+        /* === FOOTER === */
+        footer {
+            background-color: var(--white);
+            color: var(--text-muted);
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- ===================================== -->
-    <!--          CARD FORM STUNTING           -->
-    <!-- ===================================== -->
-    <div class="card">
-        <h2>Deteksi Stunting Usia 0-3 Tahun</h2>
-        <p class="subtitle">Pantau pertumbuhan buah hati dengan mudah, Bun!</p>
+    <!-- HEADER -->
+    <header>
+        <h1>HealthPredict</h1>
+        <p>Platform Pintar Cek Pertumbuhan Anak & Kategori Berat Badan</p>
+    </header>
 
-        <!-- Action diubah ke /predict_stunting -->
-        <form action="/predict_stunting" method="post">
-            <div class="input-group">
-                <label>Umur Anak (Bulan)</label>
-                <input type="number" name="umur" min="1" max="36" placeholder="Contoh: 12" required 
-                oninvalid="this.setCustomValidity('Maaf Bun, umur harus antara 1 sampai 36 bulan ya.')" 
-                oninput="this.setCustomValidity('')">
-            </div>
+    <!-- MAIN CONTENT -->
+    <main>
+        <div class="forms-container">
+            
+            <!-- CARD STUNTING -->
+            <div class="card">
+                <h2>Deteksi Stunting</h2>
+                <p class="subtitle">Pantau pertumbuhan buah hati usia 0-3 tahun.</p>
 
-            <div class="input-group">
-                <label>Jenis Kelamin</label>
-                <div class="radio-container">
-                    <div class="radio-item">
-                        <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" required>
-                        <label for="laki-laki">Laki-laki</label>
+                <form action="/predict_stunting" method="post">
+                    <div class="input-group">
+                        <label>Umur Anak (Bulan)</label>
+                        <input type="number" name="umur" min="1" max="36" placeholder="Contoh: 12" required>
                     </div>
-                    <div class="radio-item">
-                        <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" required>
-                        <label for="perempuan">Perempuan</label>
+
+                    <div class="input-group">
+                        <label>Jenis Kelamin</label>
+                        <div class="radio-container">
+                            <div class="radio-item">
+                                <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" required>
+                                <label for="laki-laki">Laki-laki</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" required>
+                                <label for="perempuan">Perempuan</label>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="input-group">
-                <label>Tinggi Badan (cm)</label>
-                <input type="number" name="tinggi" min="45" max="110" step="0.1" placeholder="Contoh: 75.5" required 
-                oninvalid="this.setCustomValidity('Maaf Bun, tinggi badan harus antara 45 sampai 110 cm ya.')" 
-                oninput="this.setCustomValidity('')">
-            </div>
-
-            <button type="submit">Cek Stunting</button>
-        </form>
-
-        <!-- Variabel diubah jadi error_stunting -->
-        {% if error_stunting %}
-            <div class="error-box">
-                {{ error_stunting }}
-            </div>
-        {% endif %}
-
-        <!-- Variabel diubah jadi hasil_stunting -->
-        {% if hasil_stunting %}
-            <div class="result-box {{ hasil_stunting.css }}">
-                <div class="result-pesan">{{ hasil_stunting.pesan }}</div>
-                <div class="result-saran">{{ hasil_stunting.saran }}</div>
-            </div>
-        {% endif %}
-    </div>
-
-
-    <!-- ===================================== -->
-    <!--          CARD FORM OBESITAS           -->
-    <!-- ===================================== -->
-    <div class="card" style="margin-top: 30px;">
-        <h2>Deteksi Kategori Berat Badan</h2>
-        <p class="subtitle">Cek apakah berat badanmu ideal!</p>
-
-        <form action="/predict_obesitas" method="post">
-            <div class="input-group">
-                <label>Nama Kamu</label>
-                <input type="text" name="nama" placeholder="Masukkan nama kamu (contoh: alfa)" required>
-            </div>
-
-            <div class="input-group">
-                <label>Umur (Tahun)</label>
-                <input type="number" name="umur" min="1" placeholder="Masukkan umur" required>
-            </div>
-
-            <div class="input-group">
-                <label>Gender</label>
-                <div class="radio-container">
-                    <div class="radio-item">
-                        <input type="radio" id="male" name="gender" value="1" required>
-                        <label for="male">Laki Laki</label>
+                    <div class="input-group">
+                        <label>Tinggi Badan (cm)</label>
+                        <input type="number" name="tinggi" min="45" max="110" step="0.1" placeholder="Contoh: 75.5" required>
                     </div>
-                    <div class="radio-item">
-                        <input type="radio" id="female" name="gender" value="0" required>
-                        <label for="female">Perempuan</label>
+
+                    <button type="submit">Cek Stunting</button>
+                </form>
+
+                {% if error_stunting %}
+                    <div class="error-box">{{ error_stunting }}</div>
+                {% endif %}
+
+                {% if hasil_stunting %}
+                    <div class="result-box">
+                        <div class="result-pesan">{{ hasil_stunting.pesan }}</div>
+                        <div class="result-saran">{{ hasil_stunting.saran }}</div>
                     </div>
-                </div>
+                {% endif %}
             </div>
 
-            <div class="input-group">
-                <label>Tinggi Badan (CM)</label>
-                <input type="number" name="tinggi" min="50" step="0.1" placeholder="Masukkan tinggi badan" required>
+
+            <!-- CARD OBESITAS -->
+            <div class="card">
+                <h2>Deteksi Berat Badan</h2>
+                <p class="subtitle">Cek apakah berat badanmu sudah ideal.</p>
+
+                <form action="/predict_obesitas" method="post">
+                    <div class="input-group">
+                        <label>Nama Kamu</label>
+                        <input type="text" name="nama" placeholder="Contoh: alfa" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Umur (Tahun)</label>
+                        <input type="number" name="umur" min="1" placeholder="Contoh: 17" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Gender</label>
+                        <div class="radio-container">
+                            <div class="radio-item">
+                                <input type="radio" id="male" name="gender" value="1" required>
+                                <label for="male">Laki Laki</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="female" name="gender" value="0" required>
+                                <label for="female">Perempuan</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Tinggi Badan (CM)</label>
+                        <input type="number" name="tinggi" min="50" step="0.1" placeholder="Contoh: 167" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Berat Badan (KG)</label>
+                        <input type="number" name="berat" min="1" step="0.1" placeholder="Contoh: 52" required>
+                    </div>
+
+                    <button type="submit">Cek Sekarang</button>
+                </form>
+
+                {% if error_obesitas %}
+                    <div class="error-box">{{ error_obesitas }}</div>
+                {% endif %}
+
+                {% if hasil_obesitas %}
+                    <div class="result-box">
+                        <div class="result-pesan">{{ hasil_obesitas }}</div>
+                    </div>
+                {% endif %}
             </div>
 
-            <div class="input-group">
-                <label>Berat Badan (KG)</label>
-                <input type="number" name="berat" min="1" step="0.1" placeholder="Masukkan berat badan" required>
-            </div>
+        </div>
+    </main>
 
-            <button type="submit">Cek Sekarang</button>
-        </form>
-
-        <!-- Menampilkan pesan error khusus obesitas -->
-        {% if error_obesitas %}
-            <div class="error-box">
-                {{ error_obesitas }}
-            </div>
-        {% endif %}
-
-        <!-- Menampilkan hasil dari model obesitas -->
-        {% if hasil_obesitas %}
-            <div class="result-box {{ css_obesitas }}">
-                <div class="result-pesan">{{ hasil_obesitas }}</div>
-            </div>
-        {% endif %}
-    </div>
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Platform Prediksi Kesehatan. Dibuat dengan Flask & Machine Learning.</p>
+    </footer>
 
 </body>
 </html>
