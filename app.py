@@ -53,10 +53,26 @@ def predict_stunting():
 
             # Mapping Label
             status_info = {
-                0: {"css": "normal", "pesan": "Wah, tinggi si Kecil Normal Bun!", "saran": "Pertumbuhannya sudah sangat baik..."},
-                1: {"css": "sangat-pendek", "pesan": "Perhatian khusus ya Bun, si Kecil masuk kategori Sangat Pendek.", "saran": "Jangan panik dulu..."},
-                2: {"css": "pendek", "pesan": "Halo Bun, tinggi si Kecil saat ini masuk kategori Pendek.", "saran": "Yuk tingkatkan lagi asupan..."},
-                3: {"css": "tinggi", "pesan": "Hebat Bun! Tinggi si Kecil masuk kategori Tinggi.", "saran": "Pertumbuhannya sangat optimal..."}
+                0: {
+                    "css": "normal", 
+                    "pesan": "Wah, tinggi si Kecil Normal Bun!", 
+                    "saran": "Pertumbuhannya sudah sangat baik. Terus jaga asupan nutrisi seimbang, berikan protein hewani seperti telur/ikan setiap hari, dan pantau terus tumbuh kembangnya di Posyandu ya, Bun!"
+                },
+                1: {
+                    "css": "sangat-pendek", 
+                    "pesan": "Perhatian khusus ya Bun, si Kecil masuk kategori Sangat Pendek.", 
+                    "saran": "Jangan panik dulu, Bun. Segera konsultasikan ke dokter anak atau puskesmas terdekat agar mendapat penanganan yang tepat. Dengan tambahan nutrisi khusus dan kejar tumbuh, si Kecil masih bisa dikejar kok!"
+                },
+                2: {
+                    "css": "pendek", 
+                    "pesan": "Halo Bun, tinggi si Kecil saat ini masuk kategori Pendek.", 
+                    "saran": "Yuk tingkatkan lagi asupan protein hewani si Kecil dan pastikan ia cukup istirahat. Jangan lupa rutin ke Posyandu untuk memantau perkembangannya dan konsultasi gizi ya, Bun."
+                },
+                3: {
+                    "css": "tinggi", 
+                    "pesan": "Hebat Bun! Tinggi si Kecil masuk kategori Tinggi.", 
+                    "saran": "Pertumbuhannya sangat optimal! Tetap berikan makanan bergizi seimbang dan stimulasi bermain yang cukup agar si Kecil tumbuh cerdas, kuat, dan aktif!"
+                }
             }
 
             hasil = status_info.get(angka_hasil)
