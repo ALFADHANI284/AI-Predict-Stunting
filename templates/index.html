@@ -275,52 +275,119 @@
 </head>
 <body>
 
+    <!-- ===================================== -->
+    <!--          CARD FORM STUNTING           -->
+    <!-- ===================================== -->
     <div class="card">
         <h2>Deteksi Stunting Usia 0-3 Tahun</h2>
         <p class="subtitle">Pantau pertumbuhan buah hati dengan mudah, Bun!</p>
 
-        <form action="/predict" method="post">
+        <!-- Action diubah ke /predict_stunting -->
+        <form action="/predict_stunting" method="post">
             <div class="input-group">
                 <label>Umur Anak (Bulan)</label>
-               <input type="number" name="umur" min="1" max="36" placeholder="Contoh: 12" required 
-       oninvalid="this.setCustomValidity('Maaf Bun, umur harus antara 1 sampai 36 bulan ya.')" 
-       oninput="this.setCustomValidity('')">
+                <input type="number" name="umur" min="1" max="36" placeholder="Contoh: 12" required 
+                oninvalid="this.setCustomValidity('Maaf Bun, umur harus antara 1 sampai 36 bulan ya.')" 
+                oninput="this.setCustomValidity('')">
             </div>
 
             <div class="input-group">
-    <label>Jenis Kelamin</label>
-    <div class="radio-container">
-        <div class="radio-item">
-            <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" required>
-            <label for="laki-laki">Laki-laki</label>
-        </div>
-        <div class="radio-item">
-            <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" required>
-            <label for="perempuan">Perempuan</label>
-        </div>
-    </div>
-</div>
+                <label>Jenis Kelamin</label>
+                <div class="radio-container">
+                    <div class="radio-item">
+                        <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" required>
+                        <label for="laki-laki">Laki-laki</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" required>
+                        <label for="perempuan">Perempuan</label>
+                    </div>
+                </div>
+            </div>
 
             <div class="input-group">
                 <label>Tinggi Badan (cm)</label>
                 <input type="number" name="tinggi" min="45" max="110" step="0.1" placeholder="Contoh: 75.5" required 
-       oninvalid="this.setCustomValidity('Maaf Bun, tinggi badan harus antara 45 sampai 110 cm ya.')" 
-       oninput="this.setCustomValidity('')">
+                oninvalid="this.setCustomValidity('Maaf Bun, tinggi badan harus antara 45 sampai 110 cm ya.')" 
+                oninput="this.setCustomValidity('')">
+            </div>
+
+            <button type="submit">Cek Stunting</button>
+        </form>
+
+        <!-- Variabel diubah jadi error_stunting -->
+        {% if error_stunting %}
+            <div class="error-box">
+                {{ error_stunting }}
+            </div>
+        {% endif %}
+
+        <!-- Variabel diubah jadi hasil_stunting -->
+        {% if hasil_stunting %}
+            <div class="result-box {{ hasil_stunting.css }}">
+                <div class="result-pesan">{{ hasil_stunting.pesan }}</div>
+                <div class="result-saran">{{ hasil_stunting.saran }}</div>
+            </div>
+        {% endif %}
+    </div>
+
+
+    <!-- ===================================== -->
+    <!--          CARD FORM OBESITAS           -->
+    <!-- ===================================== -->
+    <div class="card" style="margin-top: 30px;">
+        <h2>Deteksi Kategori Berat Badan</h2>
+        <p class="subtitle">Cek apakah berat badanmu ideal!</p>
+
+        <form action="/predict_obesitas" method="post">
+            <div class="input-group">
+                <label>Nama Kamu</label>
+                <input type="text" name="nama" placeholder="Masukkan nama kamu (contoh: alfa)" required>
+            </div>
+
+            <div class="input-group">
+                <label>Umur (Tahun)</label>
+                <input type="number" name="umur" min="1" placeholder="Masukkan umur" required>
+            </div>
+
+            <div class="input-group">
+                <label>Gender</label>
+                <div class="radio-container">
+                    <div class="radio-item">
+                        <input type="radio" id="male" name="gender" value="1" required>
+                        <label for="male">Laki Laki</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="female" name="gender" value="0" required>
+                        <label for="female">Perempuan</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Tinggi Badan (CM)</label>
+                <input type="number" name="tinggi" min="50" step="0.1" placeholder="Masukkan tinggi badan" required>
+            </div>
+
+            <div class="input-group">
+                <label>Berat Badan (KG)</label>
+                <input type="number" name="berat" min="1" step="0.1" placeholder="Masukkan berat badan" required>
             </div>
 
             <button type="submit">Cek Sekarang</button>
         </form>
 
-        {% if error %}
+        <!-- Menampilkan pesan error khusus obesitas -->
+        {% if error_obesitas %}
             <div class="error-box">
-                {{ error }}
+                {{ error_obesitas }}
             </div>
         {% endif %}
 
-        {% if hasil %}
-            <div class="result-box {{ hasil.css }}">
-                <div class="result-pesan">{{ hasil.pesan }}</div>
-                <div class="result-saran">{{ hasil.saran }}</div>
+        <!-- Menampilkan hasil dari model obesitas -->
+        {% if hasil_obesitas %}
+            <div class="result-box {{ css_obesitas }}">
+                <div class="result-pesan">{{ hasil_obesitas }}</div>
             </div>
         {% endif %}
     </div>
