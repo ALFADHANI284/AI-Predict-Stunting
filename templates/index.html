@@ -3,360 +3,1684 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALSHEICO</title>
+    <title>ALSEICHO — Jujutsu Kesehatan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Noto+Serif+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
     <style>
-        /* === RESET & GLOBAL VARIABLES === */
-        :root {
-            --primary-blue: #0056b3;
-            --light-blue: #e6f0fa;
-            --white: #ffffff;
-            --bg-color: #f4f7f6;
-            --text-dark: #333333;
-            --text-muted: #666666;
-            --border-color: #d1d9e6;
-        }
+    /* =============================================
+       ROOT & RESET
+    ============================================= */
+    :root {
+        --void:       #050508;
+        --abyss:      #0a0a12;
+        --deep:       #0f0f1a;
+        --surface:    #141421;
+        --panel:      #1a1a2e;
+        --border:     #2a2a45;
+        --cursed-red:     #c0392b;
+        --cursed-red-hot: #e74c3c;
+        --cursed-red-dim: #7a1a14;
+        --blood:      #8b0000;
+        --gold:       #c9a84c;
+        --gold-bright:#f0c060;
+        --gold-dim:   #6b5a28;
+        --white:      #f0ede8;
+        --grey:       #8888aa;
+        --ryomen:     #1e1e35;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        --font-display: 'Cinzel Decorative', serif;
+        --font-title:   'Cinzel', serif;
+        --font-body:    'Noto Serif JP', serif;
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-dark);
+        --glow-red:  0 0 20px rgba(192,57,43,0.6), 0 0 60px rgba(192,57,43,0.2);
+        --glow-gold: 0 0 20px rgba(201,168,76,0.6), 0 0 60px rgba(201,168,76,0.2);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html {
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--cursed-red) var(--abyss);
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--abyss); }
+    ::-webkit-scrollbar-thumb { background: var(--cursed-red); border-radius: 0; }
+
+    body {
+        font-family: var(--font-body);
+        background-color: var(--void);
+        color: var(--white);
+        overflow-x: hidden;
+        cursor: default;
+    }
+
+    /* =============================================
+       CURSED ENERGY BACKGROUND EFFECTS
+    ============================================= */
+    .ce-bg {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+
+    /* Hollow purple vortex top-right */
+    .ce-bg::before {
+        content: '';
+        position: absolute;
+        top: -200px; right: -200px;
+        width: 700px; height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(100,0,180,0.08) 0%, transparent 70%);
+        animation: vortex 20s linear infinite;
+    }
+
+    /* Domain expansion glow bottom-left */
+    .ce-bg::after {
+        content: '';
+        position: absolute;
+        bottom: -300px; left: -150px;
+        width: 800px; height: 800px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(180,0,0,0.07) 0%, transparent 70%);
+        animation: vortex 28s linear infinite reverse;
+    }
+
+    @keyframes vortex {
+        from { transform: rotate(0deg) scale(1); }
+        50%  { transform: rotate(180deg) scale(1.1); }
+        to   { transform: rotate(360deg) scale(1); }
+    }
+
+    /* Scattered cursed marks */
+    .cursed-marks {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image:
+            radial-gradient(circle 1px at 15% 25%, rgba(192,57,43,0.4) 0%, transparent 100%),
+            radial-gradient(circle 1px at 75% 15%, rgba(201,168,76,0.3) 0%, transparent 100%),
+            radial-gradient(circle 1px at 85% 70%, rgba(192,57,43,0.3) 0%, transparent 100%),
+            radial-gradient(circle 1px at 25% 80%, rgba(201,168,76,0.2) 0%, transparent 100%),
+            radial-gradient(circle 1px at 50% 50%, rgba(100,0,180,0.2) 0%, transparent 100%);
+        background-size: 100% 100%;
+    }
+
+    /* Scanlines texture */
+    .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0,0,0,0.03) 2px,
+            rgba(0,0,0,0.03) 4px
+        );
+    }
+
+    /* =============================================
+       KANJI WATERMARK BAND
+    ============================================= */
+    .kanji-band {
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 52px;
+        writing-mode: vertical-rl;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-body);
+        font-size: 0.65rem;
+        letter-spacing: 6px;
+        color: rgba(201,168,76,0.12);
+        pointer-events: none;
+        z-index: 1;
+        user-select: none;
+        border-left: 1px solid rgba(201,168,76,0.05);
+    }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    .navbar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 200;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2.5rem;
+        background: rgba(5,5,8,0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        color: var(--gold);
+        text-decoration: none;
+        letter-spacing: 3px;
+        text-shadow: var(--glow-gold);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .nav-logo-line {
+        width: 28px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .nav-links a {
+        font-family: var(--font-title);
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--grey);
+        text-decoration: none;
+        padding: 0.4rem 0.9rem;
+        border: 1px solid transparent;
+        transition: all 0.25s;
+    }
+
+    .nav-links a:hover {
+        color: var(--white);
+        border-color: var(--border);
+        background: rgba(192,57,43,0.08);
+    }
+
+    .nav-links .nav-cta {
+        color: var(--cursed-red-hot);
+        border-color: var(--cursed-red-dim);
+        background: rgba(192,57,43,0.1);
+        font-weight: 700;
+    }
+
+    .nav-links .nav-cta:hover {
+        background: var(--cursed-red);
+        color: var(--white);
+        box-shadow: var(--glow-red);
+    }
+
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 4px;
+    }
+    .hamburger span {
+        display: block;
+        width: 22px; height: 2px;
+        background: var(--gold);
+        transition: all 0.3s;
+    }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+        position: relative;
+        min-height: 100vh;
+        padding-top: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        overflow: hidden;
+    }
+
+    /* Large kanji background text */
+    .hero-kanji-bg {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-body);
+        font-size: clamp(14rem, 30vw, 28rem);
+        font-weight: 700;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(201,168,76,0.04);
+        pointer-events: none;
+        user-select: none;
+        letter-spacing: -0.05em;
+        line-height: 1;
+    }
+
+    /* Horizontal rule lines */
+    .hero-line-top, .hero-line-bottom {
+        position: absolute;
+        left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold-dim), var(--cursed-red-dim), transparent);
+    }
+    .hero-line-top { top: 120px; }
+    .hero-line-bottom { bottom: 80px; }
+
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        padding: 2rem;
+        max-width: 900px;
+    }
+
+    .hero-eyebrow {
+        font-family: var(--font-title);
+        font-size: 0.65rem;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 2rem;
+        animation: fadeUp 0.8s 0.1s both;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .hero-eyebrow::before, .hero-eyebrow::after {
+        content: '';
+        display: block;
+        width: 40px; height: 1px;
+        background: var(--gold-dim);
+    }
+
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.8rem, 8vw, 6.5rem);
+        line-height: 1;
+        letter-spacing: 4px;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.8s 0.2s both;
+    }
+
+    .hero-title .line1 { color: var(--white); display: block; }
+    .hero-title .line2 {
+        color: var(--cursed-red-hot);
+        text-shadow: var(--glow-red);
+        display: block;
+    }
+    .hero-title .line3 { color: var(--gold); text-shadow: var(--glow-gold); display: block; font-size: 0.5em; letter-spacing: 8px; margin-top: 0.5rem; }
+
+    .hero-desc {
+        font-size: 0.95rem;
+        line-height: 1.9;
+        color: var(--grey);
+        max-width: 580px;
+        margin: 0 auto 2.5rem;
+        animation: fadeUp 0.8s 0.3s both;
+        font-weight: 300;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeUp 0.8s 0.4s both;
+    }
+
+    .btn-primary {
+        font-family: var(--font-title);
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        background: var(--cursed-red);
+        color: var(--white);
+        padding: 0.9rem 2.5rem;
+        border: 1px solid var(--cursed-red-hot);
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+        box-shadow: var(--glow-red);
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .btn-primary:hover {
+        background: var(--cursed-red-hot);
+        box-shadow: 0 0 40px rgba(231,76,60,0.8), 0 0 80px rgba(231,76,60,0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        font-family: var(--font-title);
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        background: transparent;
+        color: var(--gold);
+        padding: 0.9rem 2.5rem;
+        border: 1px solid var(--gold-dim);
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+        clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(201,168,76,0.1);
+        border-color: var(--gold);
+        box-shadow: var(--glow-gold);
+        transform: translateY(-2px);
+    }
+
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 4rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid rgba(201,168,76,0.15);
+        animation: fadeUp 0.8s 0.5s both;
+        flex-wrap: wrap;
+    }
+
+    .stat-item { text-align: center; }
+    .stat-num {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        color: var(--cursed-red-hot);
+        text-shadow: var(--glow-red);
+        display: block;
+        line-height: 1;
+    }
+    .stat-label {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--grey);
+        margin-top: 0.4rem;
+        display: block;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =============================================
+       SECTION BASE
+    ============================================= */
+    section {
+        position: relative;
+        z-index: 2;
+        padding: 6rem 4rem;
+    }
+
+    .section-divider {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .section-eyebrow {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-eyebrow::after {
+        content: '';
+        flex: 1;
+        max-width: 60px;
+        height: 1px;
+        background: var(--gold-dim);
+    }
+
+    .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        line-height: 1.1;
+        color: var(--white);
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+    }
+
+    .section-sub {
+        font-size: 0.9rem;
+        line-height: 1.8;
+        color: var(--grey);
+        max-width: 560px;
+        font-weight: 300;
+    }
+
+    /* =============================================
+       CURSED TICKER
+    ============================================= */
+    .ticker-wrap {
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        background: var(--cursed-red-dim);
+        border-top: 1px solid var(--cursed-red);
+        border-bottom: 1px solid var(--cursed-red);
+        padding: 0.65rem 0;
+    }
+
+    .ticker-track {
+        display: flex;
+        white-space: nowrap;
+        animation: ticker 25s linear infinite;
+    }
+
+    .ticker-item {
+        font-family: var(--font-title);
+        font-size: 0.7rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: rgba(240,237,232,0.7);
+        padding: 0 2.5rem;
+    }
+
+    .ticker-sep {
+        color: var(--gold);
+        padding: 0 0.5rem;
+    }
+
+    @keyframes ticker {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+
+    /* =============================================
+       WHY SECTION
+    ============================================= */
+    .why-section {
+        background: var(--abyss);
+    }
+
+    .why-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5px;
+        margin-top: 3.5rem;
+        border: 1px solid var(--border);
+    }
+
+    .why-card {
+        background: var(--surface);
+        padding: 2.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s;
+        border: 1px solid transparent;
+    }
+
+    .why-card::before {
+        content: attr(data-num);
+        position: absolute;
+        top: -1rem;
+        right: 1.5rem;
+        font-family: var(--font-display);
+        font-size: 5rem;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(192,57,43,0.12);
+        pointer-events: none;
+        line-height: 1;
+    }
+
+    .why-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0;
+        width: 0; height: 2px;
+        background: linear-gradient(90deg, var(--cursed-red), var(--gold));
+        transition: width 0.4s ease;
+    }
+
+    .why-card:hover {
+        background: var(--ryomen);
+        border-color: rgba(192,57,43,0.3);
+    }
+
+    .why-card:hover::after { width: 100%; }
+
+    .why-card-num {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 3px;
+        color: var(--cursed-red);
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .why-card h3 {
+        font-family: var(--font-title);
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        color: var(--white);
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+    }
+
+    .why-card p {
+        font-size: 0.85rem;
+        line-height: 1.75;
+        color: var(--grey);
+        font-weight: 300;
+    }
+
+    /* =============================================
+       HOW SECTION
+    ============================================= */
+    .how-section {
+        background: var(--deep);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .how-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2px;
+        margin-top: 3.5rem;
+    }
+
+    .how-step {
+        background: var(--panel);
+        padding: 2.5rem 1.75rem;
+        border: 1px solid var(--border);
+        position: relative;
+        transition: all 0.3s;
+    }
+
+    .how-step:hover {
+        border-color: var(--gold-dim);
+        background: var(--ryomen);
+    }
+
+    .how-step-num {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        line-height: 1;
+        color: transparent;
+        -webkit-text-stroke: 1px var(--cursed-red-dim);
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .how-step h3 {
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 0.75rem;
+    }
+
+    .how-step p {
+        font-size: 0.82rem;
+        line-height: 1.8;
+        color: var(--grey);
+        font-weight: 300;
+    }
+
+    /* connector arrow */
+    .how-step:not(:last-child)::after {
+        content: '→';
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--cursed-red-dim);
+        font-size: 1.2rem;
+        z-index: 3;
+    }
+
+    /* =============================================
+       FORM SECTION
+    ============================================= */
+    .form-section {
+        background: var(--abyss);
+        border-top: 1px solid var(--border);
+    }
+
+    .forms-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 3.5rem;
+    }
+
+    .form-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Corner marks */
+    .form-card::before, .form-card::after {
+        content: '';
+        position: absolute;
+        width: 12px; height: 12px;
+    }
+    .form-card::before {
+        top: -1px; left: -1px;
+        border-top: 2px solid var(--gold);
+        border-left: 2px solid var(--gold);
+    }
+    .form-card::after {
+        bottom: -1px; right: -1px;
+        border-bottom: 2px solid var(--cursed-red);
+        border-right: 2px solid var(--cursed-red);
+    }
+
+    .form-card-head {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .form-card-head h3 {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        letter-spacing: 2px;
+        color: var(--white);
+    }
+
+    .form-card-tag {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 0.2rem 0.6rem;
+        border: 1px solid;
+        white-space: nowrap;
+    }
+
+    .tag-stunting { color: var(--cursed-red); border-color: var(--cursed-red-dim); background: rgba(192,57,43,0.08); }
+    .tag-obesitas { color: var(--gold); border-color: var(--gold-dim); background: rgba(201,168,76,0.08); }
+
+    .form-card-body { padding: 2rem; }
+
+    /* Inputs */
+    .input-group { margin-bottom: 1.35rem; }
+
+    .input-group label {
+        display: block;
+        font-family: var(--font-title);
+        font-size: 0.62rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--grey);
+        margin-bottom: 0.5rem;
+    }
+
+    .input-group input[type="text"],
+    .input-group input[type="number"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        color: var(--white);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        font-weight: 300;
+        outline: none;
+        transition: all 0.25s;
+        -moz-appearance: textfield;
+        border-radius: 0;
+    }
+    .input-group input::-webkit-outer-spin-button,
+    .input-group input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    .input-group input:focus {
+        border-color: var(--cursed-red);
+        background: var(--ryomen);
+        box-shadow: 0 0 0 1px var(--cursed-red-dim), inset 0 0 20px rgba(192,57,43,0.05);
+    }
+
+    /* Radio toggle */
+    .radio-toggle {
+        display: flex;
+        border: 1px solid var(--border);
+        overflow: hidden;
+    }
+
+    .radio-opt { flex: 1; position: relative; }
+
+    .radio-opt input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0; height: 0;
+    }
+
+    .radio-opt label {
+        display: block;
+        padding: 0.7rem 0.5rem;
+        font-family: var(--font-title);
+        font-size: 0.68rem;
+        letter-spacing: 2px;
+        text-align: center;
+        cursor: pointer;
+        color: var(--grey);
+        background: var(--panel);
+        border-right: 1px solid var(--border);
+        text-transform: uppercase;
+        transition: all 0.2s;
+        margin-bottom: 0;
+    }
+
+    .radio-opt:last-child label { border-right: none; }
+
+    .radio-opt input:checked + label {
+        background: var(--cursed-red-dim);
+        color: var(--white);
+        border-color: var(--cursed-red);
+    }
+
+    .radio-opt label:hover { background: var(--ryomen); color: var(--white); }
+
+    /* Submit button */
+    .submit-btn {
+        width: 100%;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        font-family: var(--font-title);
+        font-size: 0.72rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-stunting {
+        background: linear-gradient(135deg, var(--cursed-red-dim), var(--cursed-red));
+        color: var(--white);
+        box-shadow: var(--glow-red);
+        clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    }
+
+    .btn-stunting:hover {
+        background: linear-gradient(135deg, var(--cursed-red), var(--cursed-red-hot));
+        box-shadow: 0 0 30px rgba(231,76,60,0.7);
+        transform: translateY(-2px);
+    }
+
+    .btn-obesitas {
+        background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+        color: var(--void);
+        font-weight: 700;
+        clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    }
+
+    .btn-obesitas:hover {
+        background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+        box-shadow: var(--glow-gold);
+        transform: translateY(-2px);
+    }
+
+    /* =============================================
+       RESULT BOXES (Flask Jinja2 target areas)
+    ============================================= */
+    .result-area { margin-top: 1.5rem; }
+
+    .error-box {
+        padding: 1rem 1.25rem;
+        background: rgba(139,0,0,0.2);
+        border: 1px solid var(--blood);
+        border-left: 3px solid var(--cursed-red-hot);
+        font-family: var(--font-title);
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        color: #ff8888;
+        line-height: 1.6;
+    }
+
+    .result-box {
+        padding: 1.5rem;
+        background: rgba(201,168,76,0.05);
+        border: 1px solid var(--gold-dim);
+        border-left: 3px solid var(--gold);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .result-box::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, var(--gold), transparent);
+    }
+
+    .result-pesan {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--gold);
+        letter-spacing: 1px;
+        line-height: 1.4;
+        margin-bottom: 0.75rem;
+    }
+
+    .result-saran {
+        font-family: var(--font-body);
+        font-size: 0.82rem;
+        line-height: 1.8;
+        color: var(--grey);
+        font-weight: 300;
+    }
+
+    /* Category-specific result styling */
+    .result-box.css-normal {
+        border-left-color: #4caf7a;
+        background: rgba(76,175,122,0.05);
+    }
+    .result-box.css-normal .result-pesan { color: #6dca96; }
+
+    .result-box.css-pendek {
+        border-left-color: var(--gold);
+        background: rgba(201,168,76,0.07);
+    }
+
+    .result-box.css-sangat-pendek {
+        border-left-color: var(--cursed-red-hot);
+        background: rgba(192,57,43,0.08);
+    }
+    .result-box.css-sangat-pendek .result-pesan { color: var(--cursed-red-hot); }
+
+    .result-box.css-tinggi {
+        border-left-color: #4a9eff;
+        background: rgba(74,158,255,0.05);
+    }
+    .result-box.css-tinggi .result-pesan { color: #7ab8ff; }
+
+    /* =============================================
+       RESULT PREVIEW SECTION
+    ============================================= */
+    .preview-section {
+        background: var(--deep);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+        margin-top: 3.5rem;
+    }
+
+    .preview-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        overflow: hidden;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .preview-card:hover {
+        transform: translateY(-4px);
+        z-index: 5;
+    }
+
+    .pc-header {
+        padding: 1.5rem 1.75rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .pc-status-lbl {
+        font-family: var(--font-title);
+        font-size: 0.58rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--grey);
+        margin-bottom: 0.4rem;
+        display: block;
+    }
+
+    .pc-status-val {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        display: block;
+    }
+
+    .pc-body {
+        padding: 1.5rem 1.75rem;
+    }
+
+    .pc-body p {
+        font-size: 0.82rem;
+        line-height: 1.8;
+        color: var(--grey);
+        font-weight: 300;
+        margin-bottom: 1.25rem;
+    }
+
+    .pc-bar-wrap {
+        height: 3px;
+        background: var(--border);
+        overflow: hidden;
+    }
+    .pc-bar { height: 100%; }
+
+    .pc-footer {
+        padding: 0.75rem 1.75rem;
+        border-top: 1px solid var(--border);
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--grey);
+    }
+
+    /* Card variants */
+    .preview-card.card-normal .pc-header  { border-bottom-color: rgba(76,175,122,0.3); }
+    .preview-card.card-normal .pc-status-val { color: #6dca96; text-shadow: 0 0 20px rgba(76,175,122,0.4); }
+    .preview-card.card-normal .pc-bar { background: #4caf7a; width: 62%; }
+    .preview-card.card-normal:hover { border-color: rgba(76,175,122,0.4); box-shadow: 0 8px 40px rgba(76,175,122,0.1); }
+
+    .preview-card.card-stunting .pc-header { border-bottom-color: rgba(201,168,76,0.3); }
+    .preview-card.card-stunting .pc-status-val { color: var(--gold); text-shadow: var(--glow-gold); }
+    .preview-card.card-stunting .pc-bar { background: var(--gold); width: 32%; }
+    .preview-card.card-stunting:hover { border-color: var(--gold-dim); box-shadow: 0 8px 40px rgba(201,168,76,0.1); }
+
+    .preview-card.card-obesitas .pc-header { border-bottom-color: rgba(192,57,43,0.3); }
+    .preview-card.card-obesitas .pc-status-val { color: var(--cursed-red-hot); text-shadow: var(--glow-red); }
+    .preview-card.card-obesitas .pc-bar { background: var(--cursed-red); width: 88%; }
+    .preview-card.card-obesitas:hover { border-color: var(--cursed-red-dim); box-shadow: 0 8px 40px rgba(192,57,43,0.1); }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+        position: relative;
+        z-index: 2;
+        background: var(--void);
+        border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+        padding: 4rem;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 3rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .footer-brand h2 {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        letter-spacing: 5px;
+        color: var(--gold);
+        text-shadow: var(--glow-gold);
+        margin-bottom: 1rem;
+    }
+
+    .footer-brand p {
+        font-size: 0.82rem;
+        line-height: 1.8;
+        color: var(--grey);
+        max-width: 300px;
+        font-weight: 300;
+    }
+
+    .footer-brand-kanji {
+        font-family: var(--font-body);
+        font-size: 1.5rem;
+        color: rgba(192,57,43,0.2);
+        margin-top: 1rem;
+        letter-spacing: 4px;
+    }
+
+    .footer-social {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .soc-btn {
+        width: 34px; height: 34px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--grey);
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 0;
+        text-decoration: none;
+        transition: all 0.25s;
+    }
+
+    .soc-btn:hover {
+        border-color: var(--cursed-red);
+        color: var(--cursed-red-hot);
+        background: rgba(192,57,43,0.08);
+    }
+
+    .footer-col h4 {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold-dim);
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col a {
+        color: var(--grey);
+        text-decoration: none;
+        font-size: 0.82rem;
+        font-weight: 300;
+        transition: color 0.2s;
+        display: inline-block;
+    }
+    .footer-col a:hover { color: var(--white); }
+
+    .footer-bottom {
+        padding: 1.5rem 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .footer-bottom p {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(136,136,170,0.4);
+    }
+
+    .footer-version {
+        font-family: var(--font-title);
+        font-size: 0.58rem;
+        letter-spacing: 2px;
+        color: var(--cursed-red-dim);
+        border: 1px solid var(--cursed-red-dim);
+        padding: 0.2rem 0.6rem;
+    }
+
+    /* =============================================
+       SCROLL REVEAL
+    ============================================= */
+    .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 960px) {
+        section { padding: 4.5rem 2rem; }
+        .forms-layout { grid-template-columns: 1fr; }
+        .preview-grid { grid-template-columns: 1fr; gap: 1px; }
+        .footer-inner { grid-template-columns: 1fr 1fr; padding: 2.5rem 2rem; }
+        .footer-brand { grid-column: 1 / -1; }
+        .footer-bottom { padding: 1.25rem 2rem; }
+        .how-step::after { display: none; }
+        .navbar { padding: 0 1.5rem; }
+        .nav-links { display: none; }
+        .nav-links.open {
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* === HEADER === */
-        header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            text-align: center;
-            padding: 2.5rem 1rem;
-            border-bottom: 4px solid #003d82;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* === MAIN CONTENT & GRID === */
-        main {
-            flex: 1;
-            width: 100%;
-            max-width: 1000px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .forms-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        /* === CARD STYLING === */
-        .card {
-            background-color: var(--white);
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border-top: 5px solid var(--primary-blue);
-        }
-
-        .card h2 {
-            color: var(--primary-blue);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        /* === FORM INPUTS === */
-        .input-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-        }
-
-        .input-group input[type="text"],
-        .input-group input[type="number"] {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: #fafbfc;
-        }
-
-        .input-group input[type="text"]:focus,
-        .input-group input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background-color: var(--white);
-            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
-        }
-
-        /* === RADIO BUTTONS === */
-        .radio-container {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0.5rem 0;
-        }
-
-        .radio-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .radio-item input[type="radio"] {
-            accent-color: var(--primary-blue);
-            width: 1.1rem;
-            height: 1.1rem;
-            cursor: pointer;
-        }
-
-        .radio-item label {
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-
-        /* === BUTTON === */
-        button {
-            width: 100%;
+            position: absolute;
+            top: 64px; left: 0; right: 0;
+            background: rgba(10,10,18,0.97);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
             padding: 1rem;
-            background-color: var(--primary-blue);
-            color: var(--white);
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 1rem;
+            gap: 0.25rem;
         }
+        .hamburger { display: flex; }
+        .kanji-band { display: none; }
+    }
 
-        button:hover {
-            background-color: #004494;
-        }
+    @media (max-width: 640px) {
+        .hero-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+        .hero-stats { gap: 1.5rem; }
+        .why-grid { grid-template-columns: 1fr; gap: 1px; }
+        .how-grid { grid-template-columns: 1fr 1fr; }
+        .footer-inner { grid-template-columns: 1fr; }
+        .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
 
-        /* === ALERTS & RESULTS === */
-        .error-box, .result-box {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        .error-box {
-            background-color: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #f87171;
-        }
-
-        .result-box {
-            background-color: var(--light-blue);
-            border: 1px solid var(--primary-blue);
-            color: var(--primary-blue);
-        }
-
-        .result-pesan {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .result-saran {
-            font-size: 0.9rem;
-            color: var(--text-dark);
-        }
-
-        /* === FOOTER === */
-        footer {
-            background-color: var(--white);
-            color: var(--text-muted);
-            text-align: center;
-            padding: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: auto;
-        }
-        /* === SCROLLBAR STYLING === */
-        
-        /* Untuk Firefox */
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-blue) var(--bg-color);
-        }
-
-        /* Untuk WebKit (Chrome, Safari, Edge, Opera) */
-        ::-webkit-scrollbar {
-            width: 10px;  /* Lebar scrollbar vertikal */
-            height: 10px; /* Tinggi scrollbar horizontal (kalau ada) */
-        }
-
-        /* Background/Jalur scrollbar */
-        ::-webkit-scrollbar-track {
-            background-color: var(--bg-color);
-        }
-
-        /* Bagian scrollbar yang bisa ditarik (Thumb) */
-        ::-webkit-scrollbar-thumb {
-            background-color: var(--primary-blue); /* Warna biru lembut */
-            border-radius: 10px;
-            border: 2px solid var(--bg-color); /* Efek padding dalam track */
-        }
-
-        /* Saat scrollbar di-hover/disentuh kursor */
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: var(--primary-blue);
-        }
+    @media (max-width: 420px) {
+        .how-grid { grid-template-columns: 1fr; }
+    }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <h1>Platform Prediksi Stunting dan Obesitas</h1>
-        <p>Platform Pintar Cek Stunting & Kategori Berat Badan</p>
-    </header>
+<!-- Atmospheric layers -->
+<div class="ce-bg"></div>
+<div class="cursed-marks"></div>
+<div class="scanlines"></div>
+<div class="kanji-band">呪術廻戦・健康・検知・呪力・成長・呪術廻戦・健康・検知・呪力・成長</div>
 
-    <!-- MAIN CONTENT -->
-    <main>
-        <div class="forms-container">
-            
-            <!-- CARD STUNTING -->
-            <div class="card">
-                <h2>Deteksi Stunting</h2>
-                <p class="subtitle">Pantau pertumbuhan buah hati usia 0-3 tahun.</p>
+<!-- =============================================
+     NAVBAR
+============================================= -->
+<nav class="navbar">
+    <a class="nav-logo" href="#">
+        <span class="nav-logo-line"></span>
+        ALSEICHO
+    </a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#why">Mengapa</a></li>
+        <li><a href="#how">Cara Kerja</a></li>
+        <li><a href="#form">Deteksi</a></li>
+        <li><a href="#preview">Hasil</a></li>
+        <li><a href="#form" class="nav-cta">Aktivasi Jutsu</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
 
-                <form action="/predict_stunting" method="post">
+<!-- =============================================
+     HERO
+============================================= -->
+<section class="hero" id="hero">
+    <div class="hero-kanji-bg">呪</div>
+    <div class="hero-line-top"></div>
+    <div class="hero-line-bottom"></div>
+
+    <div class="hero-content">
+        <div class="hero-eyebrow">Jujutsu Kesehatan — AI Platform</div>
+
+        <h1 class="hero-title">
+            <span class="line1">ALSEICHO</span>
+            <span class="line2">DETEKSI DINI</span>
+            <span class="line3">Stunting &amp; Obesitas</span>
+        </h1>
+
+        <p class="hero-desc">
+            Seperti mata ketiga Gojo yang melihat segalanya — Alseicho menganalisis data fisik anak 
+            dengan presisi machine learning. Tidak ada kondisi gizi yang tersembunyi dari pengamatan kami.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#form" class="btn-primary">Aktifkan Analisis</a>
+            <a href="#how" class="btn-secondary">Lihat Cara Kerja</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-num">21.6%</span>
+                <span class="stat-label">Prevalensi Stunting Indonesia</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">&lt;5s</span>
+                <span class="stat-label">Waktu Analisis AI</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">WHO</span>
+                <span class="stat-label">Standar Referensi Data</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">KNN</span>
+                <span class="stat-label">Algoritma ML Digunakan</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+    <div class="ticker-track">
+        <span class="ticker-item">DETEKSI STUNTING DINI <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">CEK KATEGORI BERAT BADAN <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">STANDAR WHO INTERNASIONAL <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">ANALISIS KNN MACHINE LEARNING <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">GRATIS DAN AKURAT <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">PANTAU TUMBUH KEMBANG ANAK <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">DETEKSI STUNTING DINI <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">CEK KATEGORI BERAT BADAN <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">STANDAR WHO INTERNASIONAL <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">ANALISIS KNN MACHINE LEARNING <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">GRATIS DAN AKURAT <span class="ticker-sep">✦</span></span>
+        <span class="ticker-item">PANTAU TUMBUH KEMBANG ANAK <span class="ticker-sep">✦</span></span>
+    </div>
+</div>
+
+<!-- =============================================
+     WHY SECTION
+============================================= -->
+<section class="why-section" id="why">
+    <div class="section-eyebrow reveal">Mengapa Penting</div>
+    <h2 class="section-title reveal reveal-delay-1">Bahaya yang Tak<br>Terlihat Mata Biasa</h2>
+    <p class="section-sub reveal reveal-delay-2">
+        Seperti kutukan tersembunyi, stunting dan obesitas mengancam dari dalam — merusak kecerdasan, 
+        kesehatan, dan masa depan anak secara perlahan tanpa gejala yang jelas.
+    </p>
+
+    <div class="why-grid">
+        <div class="why-card reveal" data-num="01">
+            <span class="why-card-num">— 01</span>
+            <h3>Stunting Merusak Otak Permanen</h3>
+            <p>Kekurangan gizi kronis di 1000 hari pertama kehidupan mengganggu perkembangan otak anak secara permanen. Tidak ada teknik pemulihan yang bisa mengembalikan potensi yang hilang sepenuhnya.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-1" data-num="02">
+            <span class="why-card-num">— 02</span>
+            <h3>Obesitas Membuka Gerbang Penyakit</h3>
+            <p>Anak dengan obesitas memiliki risiko 3x lebih tinggi terhadap diabetes, hipertensi, dan penyakit kardiovaskular. Pintu itu terbuka lebih awal dari yang kebanyakan orang tua sadari.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-2" data-num="03">
+            <span class="why-card-num">— 03</span>
+            <h3>Deteksi Dini adalah Senjata Terkuat</h3>
+            <p>Seperti segel barir yang mencegah kutukan menyebar, deteksi dini memungkinkan intervensi sebelum kerusakan permanen terjadi. Setiap bulan yang terlewat adalah kesempatan yang hilang.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-3" data-num="04">
+            <span class="why-card-num">— 04</span>
+            <h3>Data Nasional Yang Mengkhawatirkan</h3>
+            <p>1 dari 5 anak Indonesia mengalami stunting. 1 dari 8 mengalami kelebihan berat badan. Alseicho hadir sebagai solusi skrining yang dapat diakses siapapun, kapanpun, dimanapun.</p>
+        </div>
+    </div>
+</section>
+
+<!-- =============================================
+     HOW IT WORKS
+============================================= -->
+<section class="how-section" id="how">
+    <div class="section-eyebrow reveal">Cara Kerja</div>
+    <h2 class="section-title reveal reveal-delay-1">Ritual 4 Langkah<br>Menuju Kepastian</h2>
+    <p class="section-sub reveal reveal-delay-2">Tidak perlu teknik khusus. Cukup data fisik anak, dan biarkan jutsu analitik kami bekerja.</p>
+
+    <div class="how-grid reveal">
+        <div class="how-step">
+            <span class="how-step-num">01</span>
+            <h3>Input Data Fisik</h3>
+            <p>Masukkan nama, usia, tinggi badan, berat badan, dan jenis kelamin anak atau subjek yang ingin dianalisis.</p>
+        </div>
+        <div class="how-step">
+            <span class="how-step-num">02</span>
+            <h3>Jutsu KNN Bekerja</h3>
+            <p>Model K-Nearest Neighbors membandingkan data dengan ribuan referensi standar WHO secara real-time.</p>
+        </div>
+        <div class="how-step">
+            <span class="how-step-num">03</span>
+            <h3>Klasifikasi Status</h3>
+            <p>Sistem mengklasifikasikan: Normal, Pendek, Sangat Pendek, Tinggi — atau Ideal, Underweight, Overweight, Obesitas.</p>
+        </div>
+        <div class="how-step">
+            <span class="how-step-num">04</span>
+            <h3>Rekomendasi Aksi</h3>
+            <p>Hasil dilengkapi saran konkret — mulai dari penyesuaian nutrisi hingga rekomendasi konsultasi medis.</p>
+        </div>
+    </div>
+</section>
+
+<!-- =============================================
+     FORM SECTION
+     Flask Integration Point: /predict_stunting & /predict_obesitas
+============================================= -->
+<section class="form-section" id="form">
+    <div class="section-eyebrow reveal">Aktivasi Jutsu</div>
+    <h2 class="section-title reveal reveal-delay-1">Jalankan Analisis<br>Sekarang</h2>
+    <p class="section-sub reveal reveal-delay-2">Pilih jenis deteksi. Data diproses secara aman oleh model machine learning lokal.</p>
+
+    <div class="forms-layout reveal">
+
+        <!-- ============================
+             STUNTING FORM
+             Backend: POST /predict_stunting
+             Fields: umur, jenis_kelamin, tinggi
+        ============================ -->
+        <div class="form-card">
+            <div class="form-card-head">
+                <h3>DETEKSI STUNTING</h3>
+                <span class="form-card-tag tag-stunting">USIA 1 – 36 BULAN</span>
+            </div>
+            <div class="form-card-body">
+                <form action="/predict_stunting" method="post" id="formStunting">
+
                     <div class="input-group">
-                        <label>Umur Anak (Bulan)</label>
-                        <input type="number" name="umur" min="1" max="36" placeholder="Contoh: 12" required>
+                        <label for="s_umur">Umur Anak (Bulan)</label>
+                        <input type="number" id="s_umur" name="umur"
+                               min="1" max="36" placeholder="Contoh: 12" required>
                     </div>
 
                     <div class="input-group">
                         <label>Jenis Kelamin</label>
-                        <div class="radio-container">
-                            <div class="radio-item">
-                                <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" required>
-                                <label for="laki-laki">Laki-laki</label>
+                        <div class="radio-toggle">
+                            <div class="radio-opt">
+                                <input type="radio" id="s_laki" name="jenis_kelamin" value="laki-laki" required>
+                                <label for="s_laki">Laki-laki</label>
                             </div>
-                            <div class="radio-item">
-                                <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" required>
-                                <label for="perempuan">Perempuan</label>
+                            <div class="radio-opt">
+                                <input type="radio" id="s_perempuan" name="jenis_kelamin" value="perempuan">
+                                <label for="s_perempuan">Perempuan</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="input-group">
-                        <label>Tinggi Badan (cm)</label>
-                        <input type="number" name="tinggi" min="45" max="110" step="0.1" placeholder="Contoh: 75.5" required>
+                        <label for="s_tinggi">Tinggi Badan (cm)</label>
+                        <input type="number" id="s_tinggi" name="tinggi"
+                               min="45" max="110" step="0.1" placeholder="Contoh: 75.5" required>
                     </div>
 
-                    <button type="submit">Cek Stunting</button>
+                    <button type="submit" class="submit-btn btn-stunting" id="btnStunting">
+                        Aktifkan Deteksi Stunting
+                    </button>
                 </form>
 
-                {% if error_stunting %}
+                <!-- ===== FLASK RESULT AREA STUNTING =====
+                     Uncomment lines below when deploying to Flask.
+                     These Jinja2 tags render the backend prediction results.
+                ===== -->
+                <div class="result-area" id="resultStunting">
+                    {% if error_stunting %}
                     <div class="error-box">{{ error_stunting }}</div>
-                {% endif %}
+                    {% endif %}
 
-                {% if hasil_stunting %}
-                    <div class="result-box">
+                    {% if hasil_stunting %}
+                    <div class="result-box css-{{ hasil_stunting.css }}">
                         <div class="result-pesan">{{ hasil_stunting.pesan }}</div>
                         <div class="result-saran">{{ hasil_stunting.saran }}</div>
                     </div>
-                {% endif %}
+                    {% endif %}
+                </div>
+
             </div>
+        </div>
 
+        <!-- ============================
+             OBESITAS FORM
+             Backend: POST /predict_obesitas
+             Fields: nama, umur, gender, tinggi, berat
+        ============================ -->
+        <div class="form-card">
+            <div class="form-card-head">
+                <h3>DETEKSI OBESITAS</h3>
+                <span class="form-card-tag tag-obesitas">SEMUA USIA</span>
+            </div>
+            <div class="form-card-body">
+                <form action="/predict_obesitas" method="post" id="formObesitas">
 
-            <!-- CARD OBESITAS -->
-            <div class="card">
-                <h2>Deteksi Obesitas</h2>
-                <p class="subtitle">Cek apakah berat badanmu sudah ideal.</p>
-
-                <form action="/predict_obesitas" method="post">
                     <div class="input-group">
-                        <label>Nama Kamu</label>
-                        <input type="text" name="nama" placeholder="Contoh: alfa" required>
+                        <label for="o_nama">Nama</label>
+                        <input type="text" id="o_nama" name="nama"
+                               placeholder="Contoh: Satoru" required>
                     </div>
 
                     <div class="input-group">
-                        <label>Umur (Tahun)</label>
-                        <input type="number" name="umur" min="1" placeholder="Contoh: 17" required>
+                        <label for="o_umur">Umur (Tahun)</label>
+                        <input type="number" id="o_umur" name="umur"
+                               min="1" placeholder="Contoh: 17" required>
                     </div>
 
                     <div class="input-group">
                         <label>Gender</label>
-                        <div class="radio-container">
-                            <div class="radio-item">
-                                <input type="radio" id="male" name="gender" value="1" required>
-                                <label for="male">Laki Laki</label>
+                        <div class="radio-toggle">
+                            <div class="radio-opt">
+                                <input type="radio" id="o_male" name="gender" value="1" required>
+                                <label for="o_male">Laki-laki</label>
                             </div>
-                            <div class="radio-item">
-                                <input type="radio" id="female" name="gender" value="0" required>
-                                <label for="female">Perempuan</label>
+                            <div class="radio-opt">
+                                <input type="radio" id="o_female" name="gender" value="0">
+                                <label for="o_female">Perempuan</label>
                             </div>
                         </div>
                     </div>
 
                     <div class="input-group">
-                        <label>Tinggi Badan (CM)</label>
-                        <input type="number" name="tinggi" min="50" step="0.1" placeholder="Contoh: 167" required>
+                        <label for="o_tinggi">Tinggi Badan (cm)</label>
+                        <input type="number" id="o_tinggi" name="tinggi"
+                               min="50" step="0.1" placeholder="Contoh: 167" required>
                     </div>
 
                     <div class="input-group">
-                        <label>Berat Badan (KG)</label>
-                        <input type="number" name="berat" min="1" step="0.1" placeholder="Contoh: 52" required>
+                        <label for="o_berat">Berat Badan (kg)</label>
+                        <input type="number" id="o_berat" name="berat"
+                               min="1" step="0.1" placeholder="Contoh: 52" required>
                     </div>
 
-                    <button type="submit">Cek Sekarang</button>
+                    <button type="submit" class="submit-btn btn-obesitas" id="btnObesitas">
+                        Aktifkan Deteksi Obesitas
+                    </button>
                 </form>
 
-                {% if error_obesitas %}
+                <!-- ===== FLASK RESULT AREA OBESITAS =====
+                     Uncomment lines below when deploying to Flask.
+                ===== -->
+                <div class="result-area" id="resultObesitas">
+                    {% if error_obesitas %}
                     <div class="error-box">{{ error_obesitas }}</div>
-                {% endif %}
+                    {% endif %}
 
-                {% if hasil_obesitas %}
-                    <div class="result-box">
-                <div class="result-pesan">{{ hasil_obesitas.pesan }}</div>
-                <div class="result-saran">{{ hasil_obesitas.saran }}</div>
+                    {% if hasil_obesitas %}
+                    <div class="result-box css-{{ hasil_obesitas.css }}">
+                        <div class="result-pesan">{{ hasil_obesitas.pesan }}</div>
+                        <div class="result-saran">{{ hasil_obesitas.saran }}</div>
                     </div>
-                {% endif %}
+                    {% endif %}
+                </div>
+
             </div>
-
         </div>
-    </main>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2026 Platform Prediksi Kesehatan. Dibuat dengan Flask & Machine Learning.</p>
-    </footer>
+    </div>
+</section>
+
+<!-- =============================================
+     RESULT PREVIEW
+============================================= -->
+<section class="preview-section" id="preview">
+    <div class="section-eyebrow reveal">Contoh Output</div>
+    <h2 class="section-title reveal reveal-delay-1">Tiga Kemungkinan<br>Vonis Jutsu</h2>
+    <p class="section-sub reveal reveal-delay-2">Hasil analisis dikemas dalam kartu status yang langsung dapat dipahami tanpa pengetahuan medis khusus.</p>
+
+    <div class="preview-grid reveal">
+
+        <div class="preview-card card-normal">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">NORMAL</span>
+            </div>
+            <div class="pc-body">
+                <p>Tinggi dan berat badan sesuai standar pertumbuhan WHO. Tumbuh kembang berjalan optimal. Terus jaga asupan nutrisi dan aktivitas fisik rutin.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: -1.2 SD &nbsp;|&nbsp; Kategori: Normal</p>
+            </div>
+            <div class="pc-footer">Pantau setiap 3 bulan di posyandu</div>
+        </div>
+
+        <div class="preview-card card-stunting">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">STUNTING</span>
+            </div>
+            <div class="pc-body">
+                <p>Tinggi badan anak di bawah standar usianya. Diperlukan intervensi nutrisi segera. Konsultasikan ke dokter anak atau ahli gizi.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: -2.8 SD &nbsp;|&nbsp; Kategori: Pendek</p>
+            </div>
+            <div class="pc-footer">Segera konsultasi ke dokter anak</div>
+        </div>
+
+        <div class="preview-card card-obesitas">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">OBESITAS</span>
+            </div>
+            <div class="pc-body">
+                <p>IMT melebihi ambang batas sehat. Perlu pengaturan defisit kalori terstruktur dan peningkatan aktivitas fisik yang konsisten.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">BMI: 28.4 &nbsp;|&nbsp; Kategori: Obesitas</p>
+            </div>
+            <div class="pc-footer">Butuh intervensi gizi segera</div>
+        </div>
+
+    </div>
+</section>
+
+<!-- =============================================
+     FOOTER
+============================================= -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <h2>ALSEICHO</h2>
+            <p>Platform deteksi dini stunting dan obesitas berbasis AI. Dibangun dengan Flask & Machine Learning untuk mendukung kesehatan anak Indonesia.</p>
+            <div class="footer-brand-kanji">呪術 健康 検知</div>
+            <div class="footer-social">
+                <a href="#" class="soc-btn">TW</a>
+                <a href="#" class="soc-btn">IG</a>
+                <a href="#" class="soc-btn">YT</a>
+                <a href="#" class="soc-btn">GH</a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Platform</h4>
+            <ul>
+                <li><a href="#form">Deteksi Stunting</a></li>
+                <li><a href="#form">Deteksi Obesitas</a></li>
+                <li><a href="#how">Cara Kerja</a></li>
+                <li><a href="#preview">Contoh Hasil</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Informasi</h4>
+            <ul>
+                <li><a href="#">Tentang Kami</a></li>
+                <li><a href="#">Standar WHO</a></li>
+                <li><a href="#">Kebijakan Privasi</a></li>
+                <li><a href="#">Hubungi Kami</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Alseicho — Platform Prediksi Kesehatan. Flask & Machine Learning.</p>
+        <span class="footer-version">v2.0 — JJK EDITION</span>
+    </div>
+</footer>
+
+<!-- =============================================
+     JAVASCRIPT
+============================================= -->
+<script>
+    // --- Hamburger Menu ---
+    function toggleMenu() {
+        document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    // --- Scroll Reveal ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- Navbar active highlight on scroll ---
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY + 80;
+        sections.forEach(sec => {
+            const top = sec.offsetTop;
+            const bottom = top + sec.offsetHeight;
+            const id = sec.getAttribute('id');
+            const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+            if (link) {
+                if (y >= top && y < bottom) {
+                    link.style.color = 'var(--white)';
+                    link.style.borderColor = 'var(--border)';
+                } else {
+                    link.style.color = '';
+                    link.style.borderColor = '';
+                }
+            }
+        });
+    });
+
+    // --- Submit button loading state ---
+    // (Gives visual feedback while Flask processes the request)
+    document.querySelectorAll('.submit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const form = this.closest('form');
+            if (!form.checkValidity()) return; // let browser handle validation
+            const original = this.textContent;
+            this.textContent = '呪力を解析中...';
+            this.style.opacity = '0.7';
+            this.style.pointerEvents = 'none';
+            // Safety reset after 8s (in case page doesn't reload)
+            setTimeout(() => {
+                this.textContent = original;
+                this.style.opacity = '';
+                this.style.pointerEvents = '';
+            }, 8000);
+        });
+    });
+
+    // --- Smooth anchor scroll with navbar offset ---
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function (e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                const top = target.getBoundingClientRect().top + window.scrollY - 70;
+                window.scrollTo({ top, behavior: 'smooth' });
+                // Close mobile menu if open
+                document.getElementById('navLinks').classList.remove('open');
+            }
+        });
+    });
+
+    // --- Auto-scroll to result after Flask form submit ---
+    // Checks if a result or error box is present on page load and scrolls to it
+    window.addEventListener('DOMContentLoaded', () => {
+        const resultBoxes = document.querySelectorAll('.result-area .result-box, .result-area .error-box');
+        if (resultBoxes.length > 0) {
+            setTimeout(() => {
+                const first = resultBoxes[0];
+                const top = first.getBoundingClientRect().top + window.scrollY - 100;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }, 300);
+        }
+    });
+</script>
 
 </body>
 </html>
