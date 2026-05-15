@@ -931,7 +931,7 @@
 
     .preview-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 2px;
         margin-top: 3.5rem;
     }
@@ -1232,7 +1232,7 @@
         </h1>
 
         <p class="hero-desc">
-            Seperti mata keenam Gojo yang melihat segalanya — Alseicho menganalisis data fisik anak 
+            Seperti SIX EYES Gojo yang melihat segalanya — Alseicho menganalisis data fisik anak 
             dengan presisi machine learning. Tidak ada kondisi gizi yang tersembunyi dari pengamatan kami.
         </p>
 
@@ -1243,17 +1243,17 @@
 
         <div class="hero-stats">
             <div class="stat-item">
-                <span class="stat-num">21.6%</span>
-                <span class="stat-label">Prevalensi Stunting Indonesia</span>
+                <span class="stat-num">19,8%</span>
+                <span class="stat-label">Prevalensi Stunting Indonesia(Menurut SSGI) </span>
             </div>
             <div class="stat-item">
-                <span class="stat-num">&lt;5s</span>
+                <span class="stat-num">&lt;10s</span>
                 <span class="stat-label">Waktu Analisis AI</span>
             </div>
-            <div class="stat-item">
+            <!-- <div class="stat-item">
                 <span class="stat-num">WHO</span>
                 <span class="stat-label">Standar Referensi Data</span>
-            </div>
+            </div> -->
             <div class="stat-item">
                 <span class="stat-num">KNN</span>
                 <span class="stat-label">Algoritma ML Digunakan</span>
@@ -1267,13 +1267,13 @@
     <div class="ticker-track">
         <span class="ticker-item">DETEKSI STUNTING DINI <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">CEK KATEGORI BERAT BADAN <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">STANDAR WHO INTERNASIONAL <span class="ticker-sep">✦</span></span>
+        <!-- <span class="ticker-item">STANDAR WHO INTERNASIONAL <span class="ticker-sep">✦</span></span> -->
         <span class="ticker-item">ANALISIS KNN MACHINE LEARNING <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">GRATIS DAN AKURAT <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">PANTAU TUMBUH KEMBANG ANAK <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">DETEKSI STUNTING DINI <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">CEK KATEGORI BERAT BADAN <span class="ticker-sep">✦</span></span>
-        <span class="ticker-item">STANDAR WHO INTERNASIONAL <span class="ticker-sep">✦</span></span>
+        <!-- <span class="ticker-item">STANDAR WHO INTERNASIONAL <span class="ticker-sep">✦</span></span> -->
         <span class="ticker-item">ANALISIS KNN MACHINE LEARNING <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">GRATIS DAN AKURAT <span class="ticker-sep">✦</span></span>
         <span class="ticker-item">PANTAU TUMBUH KEMBANG ANAK <span class="ticker-sep">✦</span></span>
@@ -1287,8 +1287,8 @@
     <div class="section-eyebrow reveal">Mengapa Penting</div>
     <h2 class="section-title reveal reveal-delay-1">Bahaya yang Tak<br>Terlihat Mata Biasa</h2>
     <p class="section-sub reveal reveal-delay-2">
-        Seperti kutukan tersembunyi, stunting dan obesitas mengancam dari dalam — merusak kecerdasan, 
-        kesehatan, dan masa depan anak secara perlahan tanpa gejala yang jelas.
+        Seperti kutukan yang tersembunyi, stunting dan obesitas mengancam dari dalam — merusak kecerdasan, 
+        kesehatan, dan masa depan secara perlahan tanpa gejala yang jelas.
     </p>
 
     <div class="why-grid">
@@ -1332,12 +1332,12 @@
         <div class="how-step">
             <span class="how-step-num">02</span>
             <h3>Jutsu KNN Bekerja</h3>
-            <p>Model K-Nearest Neighbors membandingkan data dengan ribuan referensi standar WHO secara real-time.</p>
+            <p>Model K-Nearest Neighbors membandingkan data dengan ribuan refererensi data.</p>
         </div>
         <div class="how-step">
             <span class="how-step-num">03</span>
             <h3>Klasifikasi Status</h3>
-            <p>Sistem mengklasifikasikan: Normal, Pendek, Sangat Pendek, Tinggi — atau Ideal, Underweight, Overweight, Obesitas.</p>
+            <p>Sistem mengklasifikasikan: Normal, Pendek, Sangat Pendek, Tinggi (untuk deteksi stunting) - Ideal, Underweight, Overweight, Obesitas (untuk deteksi obesitas).</p>
         </div>
         <div class="how-step">
             <span class="how-step-num">04</span>
@@ -1365,7 +1365,7 @@
         ============================ -->
         <div class="form-card">
             <div class="form-card-head">
-                <h3>DETEKSI STUNTING</h3>
+                <h3>DETEKSI STUNTING (Bayi/Balita)</h3>
                 <span class="form-card-tag tag-stunting">USIA 1 – 36 BULAN</span>
             </div>
             <div class="form-card-body">
@@ -1402,10 +1402,7 @@
                     </button>
                 </form>
 
-                <!-- ===== FLASK RESULT AREA STUNTING =====
-                     Uncomment lines below when deploying to Flask.
-                     These Jinja2 tags render the backend prediction results.
-                ===== -->
+                <!-- ===== FLASK RESULT AREA STUNTING ===== -->
                 <div class="result-area" id="resultStunting">
                     {% if error_stunting %}
                     <div class="error-box">{{ error_stunting }}</div>
@@ -1478,9 +1475,7 @@
                     </button>
                 </form>
 
-                <!-- ===== FLASK RESULT AREA OBESITAS =====
-                     Uncomment lines below when deploying to Flask.
-                ===== -->
+                <!-- ===== FLASK RESULT AREA OBESITAS ===== -->
                 <div class="result-area" id="resultObesitas">
                     {% if error_obesitas %}
                     <div class="error-box">{{ error_obesitas }}</div>
@@ -1493,10 +1488,8 @@
                     </div>
                     {% endif %}
                 </div>
-
             </div>
         </div>
-
     </div>
 </section>
 
@@ -1505,37 +1498,121 @@
 ============================================= -->
 <section class="preview-section" id="preview">
     <div class="section-eyebrow reveal">Contoh Output</div>
-    <h2 class="section-title reveal reveal-delay-1">Tiga Kemungkinan<br>Vonis Jutsu</h2>
+    <h2 class="section-title reveal reveal-delay-1">Delapan Kemungkinan<br>Vonis Jutsu</h2>
     <p class="section-sub reveal reveal-delay-2">Hasil analisis dikemas dalam kartu status yang langsung dapat dipahami tanpa pengetahuan medis khusus.</p>
 
+    <!-- BAGIAN 1: ANALISIS STUNTING -->
+    <div class="reveal" style="margin-top: 3rem; margin-bottom: 1rem; text-align: center;">
+        <h3 style="font-size: 1.2rem; font-weight: 600; opacity: 0.9;">Kategori Analisis Stunting (Tinggi Badan)</h3>
+    </div>
+    
     <div class="preview-grid reveal">
+        <!-- Sangat Pendek -->
+        <div class="preview-card card-stunting">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">SANGAT PENDEK</span>
+            </div>
+            <div class="pc-body">
+                <p>Tinggi badan anak jauh di bawah standar usianya (Severely Stunted). Diperlukan intervensi medis dan nutrisi yang sangat segera.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: -3.5 SD &nbsp;|&nbsp; Kategori: Sangat Pendek</p>
+            </div>
+            <div class="pc-footer">Segera konsultasi ke dokter anak/RS</div>
+        </div>
 
+        <!-- Pendek -->
+        <div class="preview-card card-stunting">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">PENDEK</span>
+            </div>
+            <div class="pc-body">
+                <p>Tinggi badan anak di bawah standar usianya (Stunted). Perbaiki asupan nutrisi protein hewani dan pantau tumbuh kembangnya.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: -2.8 SD &nbsp;|&nbsp; Kategori: Pendek</p>
+            </div>
+            <div class="pc-footer">Konsultasi gizi & perbaikan pola makan</div>
+        </div>
+
+        <!-- Normal -->
         <div class="preview-card card-normal">
             <div class="pc-header">
                 <span class="pc-status-lbl">Status Prediksi</span>
                 <span class="pc-status-val">NORMAL</span>
             </div>
             <div class="pc-body">
-                <p>Tinggi dan berat badan sesuai standar pertumbuhan WHO. Tumbuh kembang berjalan optimal. Terus jaga asupan nutrisi dan aktivitas fisik rutin.</p>
+                <p>Tinggi badan sesuai standar pertumbuhan WHO. Tumbuh kembang berjalan optimal. Terus jaga asupan nutrisi dan aktivitas fisik rutin.</p>
                 <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
                 <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: -1.2 SD &nbsp;|&nbsp; Kategori: Normal</p>
             </div>
             <div class="pc-footer">Pantau setiap 3 bulan di posyandu</div>
         </div>
 
+        <!-- Tinggi -->
+        <div class="preview-card card-normal">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">TINGGI</span>
+            </div>
+            <div class="pc-body">
+                <p>Tinggi badan berada di atas rata-rata usianya. Secara umum baik, pastikan proporsi berat badan juga seimbang dengan tinggi badan.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: +2.5 SD &nbsp;|&nbsp; Kategori: Tinggi</p>
+            </div>
+            <div class="pc-footer">Pertahankan pola hidup sehat</div>
+        </div>
+    </div>
+
+    <!-- BAGIAN 2: ANALISIS OBESITAS -->
+    <div class="reveal" style="margin-top: 4rem; margin-bottom: 1rem; text-align: center;">
+        <h3 style="font-size: 1.2rem; font-weight: 600; opacity: 0.9;">Kategori Analisis Obesitas (Indeks Massa Tubuh)</h3>
+    </div>
+
+    <div class="preview-grid reveal">
+        <!-- Underweight -->
         <div class="preview-card card-stunting">
             <div class="pc-header">
                 <span class="pc-status-lbl">Status Prediksi</span>
-                <span class="pc-status-val">STUNTING</span>
+                <span class="pc-status-val">UNDERWEIGHT</span>
             </div>
             <div class="pc-body">
-                <p>Tinggi badan anak di bawah standar usianya. Diperlukan intervensi nutrisi segera. Konsultasikan ke dokter anak atau ahli gizi.</p>
+                <p>IMT berada di bawah batas normal (Kurus). Diperlukan peningkatan asupan kalori bernutrisi untuk mencapai berat badan ideal.</p>
                 <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
-                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">Z-Score: -2.8 SD &nbsp;|&nbsp; Kategori: Pendek</p>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">BMI: 16.5 &nbsp;|&nbsp; Kategori: Underweight</p>
             </div>
-            <div class="pc-footer">Segera konsultasi ke dokter anak</div>
+            <div class="pc-footer">Tingkatkan asupan kalori & gizi</div>
         </div>
 
+        <!-- Normal -->
+        <div class="preview-card card-normal">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">NORMAL</span>
+            </div>
+            <div class="pc-body">
+                <p>IMT berada pada rentang yang ideal dan sehat. Tetap pertahankan pola makan seimbang dan gaya hidup aktif secara konsisten.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">BMI: 21.0 &nbsp;|&nbsp; Kategori: Normal</p>
+            </div>
+            <div class="pc-footer">Pertahankan gaya hidup sehat</div>
+        </div>
+
+        <!-- Overweight -->
+        <div class="preview-card card-obesitas">
+            <div class="pc-header">
+                <span class="pc-status-lbl">Status Prediksi</span>
+                <span class="pc-status-val">OVERWEIGHT</span>
+            </div>
+            <div class="pc-body">
+                <p>IMT mulai melewati batas normal (Kelebihan berat badan). Kurangi asupan gula/lemak berlebih dan tingkatkan aktivitas kardio.</p>
+                <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">BMI: 26.5 &nbsp;|&nbsp; Kategori: Overweight</p>
+            </div>
+            <div class="pc-footer">Mulai atur pola makan & olahraga</div>
+        </div>
+
+        <!-- Obesity -->
         <div class="preview-card card-obesitas">
             <div class="pc-header">
                 <span class="pc-status-lbl">Status Prediksi</span>
@@ -1544,11 +1621,10 @@
             <div class="pc-body">
                 <p>IMT melebihi ambang batas sehat. Perlu pengaturan defisit kalori terstruktur dan peningkatan aktivitas fisik yang konsisten.</p>
                 <div class="pc-bar-wrap"><div class="pc-bar"></div></div>
-                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">BMI: 28.4 &nbsp;|&nbsp; Kategori: Obesitas</p>
+                <p style="margin-top:0.75rem;margin-bottom:0;font-size:0.72rem;letter-spacing:1px;">BMI: 31.4 &nbsp;|&nbsp; Kategori: Obesitas</p>
             </div>
             <div class="pc-footer">Butuh intervensi gizi segera</div>
         </div>
-
     </div>
 </section>
 
