@@ -108,22 +108,22 @@ def predict_obesitas():
                 0: {
                     "css": "sangat-pendek",
                     "kategori": "Underweight (Kekurangan Berat Badan / Terlalu Kurus)",
-                    "saran": "Perbanyak asupan makanan bergizi dan kalori sehat untuk mencapai berat badan ideal."
+                    "saran": "Tubuhmu butuh asupan energi ekstra. Coba tambahkan porsi protein dan camilan sehat seperti kacang-kacangan atau alpukat setiap hari."
                 },
                 1: {
                     "css": "normal",
                     "kategori": "Normal Weight (Berat Badan Ideal)",
-                    "saran": "Bagus! Pertahankan pola makan sehat dan aktivitas fisik teratur untuk menjaga berat badan."
+                    "saran": "Kerja bagus! Tubuhmu berada di kondisi prima. Tetap jaga pola makan bergizi seimbang dan hidrasi yang cukup ya."
                 },
                 2: {
                     "css": "pendek",
                     "kategori": "Overweight (Kelebihan Berat Badan / Gemuk)",
-                    "saran": "Mulai kurangi konsumsi gula berlebih dan tingkatkan olahraga untuk menurunkan berat badan."
+                    "saran": "Sedikit perubahan akan sangat berarti. Cobalah aktif bergerak minimal 30 menit sehari dan kurangi minuman manis secara bertahap."
                 },
                 3: {
                     "css": "sangat-pendek",
                     "kategori": "Obesity (Obesitas / Sangat Gemuk)",
-                    "saran": "Segera atur defisit kalori dan rutin berolahraga. Konsultasikan dengan dokter gizi jika perlu."
+                    "saran": "Kesehatanmu adalah prioritas utama. Fokuslah pada makanan utuh dan jangan ragu untuk berdiskusi dengan ahli gizi demi program yang aman."
                 }
             }
 
