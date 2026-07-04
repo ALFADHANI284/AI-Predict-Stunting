@@ -2,8 +2,14 @@ from flask import Flask, render_template, request
 import joblib 
 import numpy as np
 
+
+
 # 1. Inisialisasi Aplikasi Flask
 app = Flask(__name__)
+
+@app.route('/googlecab132e16489b577.html')
+def google_verification():
+    return send_from_directory('verification', 'googlecab132e16489b577.html')
 
 # 2. Load Model dan Scaler
 try:
