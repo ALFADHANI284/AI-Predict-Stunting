@@ -7,7 +7,11 @@ import numpy as np
 # 1. Inisialisasi Aplikasi Flask
 app = Flask(__name__)
 
-@app.route('/googlecab132e16489b577.html')
+@app.route('static/sitemap.xml')
+def sitemap():
+    return send_from_directory('static', 'sitemap.xml')
+
+@app.route('verification/googlecab132e16489b577.html')
 def google_verification():
     return send_from_directory('verification', 'googlecab132e16489b577.html')
 
